@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Search homes for sale with Suman Jampany Real Estate. Find properties by location, price, beds and more.">
+  <title>Home Search - Suman Jampany Real Estate</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/search.css">
+  <!-- Leaflet open-source map library -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">Suman Jampany</a>
+        <span>Real Estate</span>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="search.html" class="active">Search</a></li>
+        <li><a href="listings.html">Listings</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Search bar hero -->
+    <section class="search-hero">
+      <div class="search-hero-inner">
+        <h1>Find Your Next Home</h1>
+        <p>Search by city, ZIP, or neighborhood</p>
+        <div class="search-bar-wrapper">
+          <div class="search-input-group">
+            <span class="search-icon">&#128269;</span>
+            <input
+              type="text"
+              id="locationInput"
+              class="search-location-input"
+              placeholder="e.g. San Jose, CA or 95101"
+              autocomplete="off"
+              aria-label="Search location"
+            >
+            <ul id="autocompleteList" class="autocomplete-list" role="listbox"></ul>
+          </div>
+          <button id="searchBtn" class="btn btn-primary search-btn">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main search layout -->
+    <div class="search-layout">
+      <!-- Filters sidebar -->
+      <aside class="search-filters">
+        <h3>Filters</h3>
+
+        <div class="filter-group">
+          <label>Price Range</label>
+          <div class="price-inputs">
+            <input type="number" id="minPrice" placeholder="Min $" min="0" step="10000">
+            <span>–</span>
+            <input type="number" id="maxPrice" placeholder="Max $" min="0" step="10000">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Bedrooms</label>
+          <div class="pill-group" id="bedsFilter">
+            <button class="pill active" data-value="">Any</button>
+            <button class="pill" data-value="1">1+</button>
+            <button class="pill" data-value="2">2+</button>
+            <button class="pill" data-value="3">3+</button>
+            <button class="pill" data-value="4">4+</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Bathrooms</label>
+          <div class="pill-group" id="bathsFilter">
+            <button class="pill active" data-value="">Any</button>
+            <button class="pill" data-value="1">1+</button>
+            <button class="pill" data-value="2">2+</button>
+            <button class="pill" data-value="3">3+</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Property Type</label>
+          <div class="pill-group" id="typeFilter">
+            <button class="pill active" data-value="">All</button>
+            <button class="pill" data-value="house">House</button>
+            <button class="pill" data-value="condo">Condo</button>
+            <button class="pill" data-value="townhouse">Townhouse</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Min Sq Ft</label>
+          <input type="number" id="minSqft" placeholder="e.g. 1000" min="0" step="100">
+        </div>
+
+        <div class="filter-group">
+          <label>Sort By</label>
+          <select id="sortBy">
+            <option value="relevant">Most Relevant</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="newest">Newest</option>
+            <option value="sqft">Largest</option>
+          </select>
+        </div>
+
+        <button id="applyFilters" class="btn btn-primary" style="width:100%;margin-top:8px">Apply Filters</button>
+        <button id="resetFilters" class="btn btn-outline" style="width:100%;margin-top:8px">Reset</button>
+      </aside>
+
+      <!-- Results area -->
+      <div class="search-results">
+        <!-- Map -->
+        <div id="map" class="search-map"></div>
+
+        <!-- Results count and view toggle -->
+        <div class="results-toolbar">
+          <span id="resultsCount" class="results-count">Enter a location to search</span>
+          <div class="view-toggle">
+            <button class="view-btn active" id="gridViewBtn" title="Grid view">&#9783;</button>
+            <button class="view-btn" id="listViewBtn" title="List view">&#9776;</button>
+          </div>
+        </div>
+
+        <!-- Property cards -->
+        <div id="propertyGrid" class="property-grid">
+          <div class="search-empty-state">
+            <div class="empty-icon">&#127968;</div>
+            <h3>Search for homes near you</h3>
+            <p>Enter a city, ZIP code, or neighborhood above to find available properties.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Suman Jampany</h4>
+          <p>Licensed Real Estate Agent<br>Helping families find their perfect home.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="search.html">Search</a></li>
+            <li><a href="listings.html">Listings</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: suman@example.com<br>Phone: (555) 123-4567</p>
+        </div>
+      </div>
+      <p class="footer-bottom">&copy; 2026 Suman Jampany Real Estate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="js/search.js"></script>
+</body>
+</html>
