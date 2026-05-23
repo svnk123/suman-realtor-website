@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse current real estate listings with Suman Jampany. Find homes for sale in your area.">
+  <title>Listings - Suman Jampany Real Estate</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">Suman Jampany</a>
+        <span>Real Estate</span>
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="listings.html" class="active">Listings</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1>Property Listings</h1>
+        <p>Find your perfect home from our curated selection of properties.</p>
+      </div>
+    </section>
+
+    <section class="listings-section">
+      <div class="container">
+        <div class="listings-filters">
+          <select id="filterType">
+            <option value="">All Types</option>
+            <option value="house">House</option>
+            <option value="condo">Condo</option>
+            <option value="townhouse">Townhouse</option>
+          </select>
+          <select id="filterBeds">
+            <option value="">Any Beds</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+          <select id="filterPrice">
+            <option value="">Any Price</option>
+            <option value="500000">Up to $500K</option>
+            <option value="750000">Up to $750K</option>
+            <option value="1000000">Up to $1M</option>
+          </select>
+          <button class="btn btn-primary" onclick="filterListings()">Search</button>
+        </div>
+
+        <div class="listings-grid" id="allListings">
+          <div class="listing-card" data-type="house" data-beds="4" data-price="850000">
+            <div class="listing-image placeholder-img"></div>
+            <div class="listing-info">
+              <h3>Beautiful Family Home</h3>
+              <p class="listing-address">123 Maple Street, Anytown, CA 90210</p>
+              <div class="listing-details">
+                <span>4 Beds</span><span>3 Baths</span><span>2,400 sqft</span>
+              </div>
+              <p class="listing-price">$850,000</p>
+              <a href="contact.html" class="btn btn-outline">Request Info</a>
+            </div>
+          </div>
+          <div class="listing-card" data-type="condo" data-beds="2" data-price="520000">
+            <div class="listing-image placeholder-img"></div>
+            <div class="listing-info">
+              <h3>Modern Condo Downtown</h3>
+              <p class="listing-address">456 Oak Avenue, Anytown, CA 90211</p>
+              <div class="listing-details">
+                <span>2 Beds</span><span>2 Baths</span><span>1,100 sqft</span>
+              </div>
+              <p class="listing-price">$520,000</p>
+              <a href="contact.html" class="btn btn-outline">Request Info</a>
+            </div>
+          </div>
+          <div class="listing-card" data-type="house" data-beds="3" data-price="420000">
+            <div class="listing-image placeholder-img"></div>
+            <div class="listing-info">
+              <h3>Charming Starter Home</h3>
+              <p class="listing-address">789 Pine Lane, Anytown, CA 90212</p>
+              <div class="listing-details">
+                <span>3 Beds</span><span>2 Baths</span><span>1,600 sqft</span>
+              </div>
+              <p class="listing-price">$420,000</p>
+              <a href="contact.html" class="btn btn-outline">Request Info</a>
+            </div>
+          </div>
+          <div class="listing-card" data-type="townhouse" data-beds="3" data-price="680000">
+            <div class="listing-image placeholder-img"></div>
+            <div class="listing-info">
+              <h3>Elegant Townhouse</h3>
+              <p class="listing-address">321 Elm Court, Anytown, CA 90213</p>
+              <div class="listing-details">
+                <span>3 Beds</span><span>2.5 Baths</span><span>1,900 sqft</span>
+              </div>
+              <p class="listing-price">$680,000</p>
+              <a href="contact.html" class="btn btn-outline">Request Info</a>
+            </div>
+          </div>
+          <div class="listing-card" data-type="house" data-beds="5" data-price="1200000">
+            <div class="listing-image placeholder-img"></div>
+            <div class="listing-info">
+              <h3>Luxury Estate</h3>
+              <p class="listing-address">555 Willow Way, Anytown, CA 90214</p>
+              <div class="listing-details">
+                <span>5 Beds</span><span>4 Baths</span><span>3,800 sqft</span>
+              </div>
+              <p class="listing-price">$1,200,000</p>
+              <a href="contact.html" class="btn btn-outline">Request Info</a>
+            </div>
+          </div>
+          <div class="listing-card" data-type="condo" data-beds="1" data-price="310000">
+            <div class="listing-image placeholder-img"></div>
+            <div class="listing-info">
+              <h3>Cozy City Condo</h3>
+              <p class="listing-address">888 Cedar Blvd, Anytown, CA 90215</p>
+              <div class="listing-details">
+                <span>1 Bed</span><span>1 Bath</span><span>750 sqft</span>
+              </div>
+              <p class="listing-price">$310,000</p>
+              <a href="contact.html" class="btn btn-outline">Request Info</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Suman Jampany</h4>
+          <p>Licensed Real Estate Agent<br>Helping families find their perfect home.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="listings.html">Listings</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>Email: suman@example.com<br>Phone: (555) 123-4567</p>
+        </div>
+      </div>
+      <p class="footer-bottom">&copy; 2026 Suman Jampany Real Estate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/scripts.js"></script>
+</body>
+</html>
