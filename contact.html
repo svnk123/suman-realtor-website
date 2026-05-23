@@ -3,124 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Contact Suman Jampany for a free real estate consultation. Reach out by phone, email, or the contact form.">
+  <meta name="description" content="Contact Suman Jampany for a free real estate consultation in Saratoga, Los Gatos, and the Bay Area.">
   <title>Contact - Suman Jampany Real Estate</title>
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .contact-section { padding: 52px 0; }
+    .contact-card { background: var(--bg-light); border-radius: var(--radius); padding: 28px 24px; border: 1px solid var(--border); }
+    .contact-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.82rem; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+    .contact-row-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .contact-row-text strong { display: block; font-size: 0.87rem; color: var(--text); }
+    .contact-row-text p, .contact-row-text a { font-size: 0.87rem; color: var(--text-light); }
+    .contact-row-text a:hover { color: var(--primary); }
+    .map-embed { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); margin-top: 20px; }
+  </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">
-        <a href="index.html">Suman Jampany</a>
-        <span>Real Estate</span>
-      </div>
-      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="search.html">Search</a></li>
-        <li><a href="listings.html">Listings</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <h1>Get in Touch</h1>
-        <p>I'd love to hear from you. Let's start a conversation.</p>
-      </div>
-    </section>
-
-    <section class="contact-section">
-      <div class="container">
-        <div class="contact-grid">
-          <div class="contact-info">
-            <h2>Contact Information</h2>
-            <div class="contact-item">
-              <strong>Phone</strong>
-              <p><a href="tel:+15551234567">(555) 123-4567</a></p>
-            </div>
-            <div class="contact-item">
-              <strong>Email</strong>
-              <p><a href="mailto:suman@example.com">suman@example.com</a></p>
-            </div>
-            <div class="contact-item">
-              <strong>Office Hours</strong>
-              <p>Monday – Saturday: 9am – 7pm<br>Sunday: By appointment</p>
-            </div>
-            <div class="contact-item">
-              <strong>Service Area</strong>
-              <p>Anytown and surrounding communities</p>
-            </div>
-          </div>
-
-          <div class="contact-form-wrapper">
-            <h2>Send a Message</h2>
-            <form id="contactForm" class="contact-form" novalidate>
-              <div class="form-group">
-                <label for="name">Full Name *</label>
-                <input type="text" id="name" name="name" placeholder="Your full name" required>
-              </div>
-              <div class="form-group">
-                <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" placeholder="your@email.com" required>
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000">
-              </div>
-              <div class="form-group">
-                <label for="interest">I'm interested in</label>
-                <select id="interest" name="interest">
-                  <option value="">Select an option</option>
-                  <option value="buying">Buying a Home</option>
-                  <option value="selling">Selling a Home</option>
-                  <option value="both">Buying &amp; Selling</option>
-                  <option value="investing">Investment Property</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="message">Message *</label>
-                <textarea id="message" name="message" rows="5" placeholder="Tell me how I can help you..." required></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Send Message</button>
-              <p id="formStatus" class="form-status"></p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>Suman Jampany</h4>
-          <p>Licensed Real Estate Agent<br>Helping families find their perfect home.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="search.html">Search</a></li>
-        <li><a href="listings.html">Listings</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <p>Email: suman@example.com<br>Phone: (555) 123-4567</p>
-        </div>
-      </div>
-      <p class="footer-bottom">&copy; 2026 Suman Jampany Real Estate. All rights reserved.</p>
+<header>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="index.html">Suman Jampany</a>
+      <span>Real Estate</span>
     </div>
-  </footer>
+    <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Search</a></li>
+      <li><a href="featured-listings.html">Listings</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <script src="js/scripts.js"></script>
+<main>
+
+  <section class="page-hero">
+    <h1>Get in Touch</h1>
+    <p>Free consultation for buyers, sellers, and investors. No pressure, no obligation.</p>
+  </section>
+
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Left: contact info -->
+        <div>
+          <div class="contact-card">
+            <h3>Contact Information</h3>
+            <div class="contact-row">
+              <div class="contact-row-icon">📞</div>
+              <div class="contact-row-text">
+                <strong>Phone / Text</strong>
+                <a href="tel:+14085551234">(408) 555-1234</a>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">✉️</div>
+              <div class="contact-row-text">
+                <strong>Email</strong>
+                <a href="mailto:suman@sumanjampany.com">suman@sumanjampany.com</a>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">📍</div>
+              <div class="contact-row-text">
+                <strong>Office</strong>
+                <p>123 Main Street, Suite 200<br>Saratoga, CA 95070</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">🕐</div>
+              <div class="contact-row-text">
+                <strong>Availability</strong>
+                <p>Mon – Sat: 9am – 7pm<br>Sunday: By appointment</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">🌐</div>
+              <div class="contact-row-text">
+                <strong>Languages</strong>
+                <p>English · Telugu · Hindi</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-row-icon">🏡</div>
+              <div class="contact-row-text">
+                <strong>Service Area</strong>
+                <p>Saratoga · Los Gatos · Monte Sereno<br>San Jose · Campbell · Cupertino</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-embed">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-122.07,-37.30,-121.90,37.40&layer=mapnik&marker=37.2638,-122.0218"
+              width="100%" height="220" style="border:0" loading="lazy"
+              title="Suman Jampany office location"
+            ></iframe>
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div class="contact-form-wrapper">
+          <h2>Send a Message</h2>
+          <p style="color:var(--text-light);font-size:0.9rem;margin-bottom:20px">I typically respond within 2 hours during business hours.</p>
+          <form id="contactForm" class="contact-form" novalidate>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-group">
+                <label for="firstName">First Name *</label>
+                <input type="text" id="firstName" name="firstName" placeholder="First name" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name *</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Last name" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(408) 000-0000">
+            </div>
+            <div class="form-group">
+              <label for="interest">I'm interested in *</label>
+              <select id="interest" name="interest" required>
+                <option value="">Select an option</option>
+                <option value="buying">Buying a Home</option>
+                <option value="selling">Selling My Home</option>
+                <option value="both">Buying &amp; Selling</option>
+                <option value="investing">Investment Property</option>
+                <option value="valuation">Home Valuation</option>
+                <option value="other">Just Exploring</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget">Budget / Price Range</label>
+              <select id="budget" name="budget">
+                <option value="">Select range</option>
+                <option value="under1m">Under $1M</option>
+                <option value="1m-1.5m">$1M – $1.5M</option>
+                <option value="1.5m-2m">$1.5M – $2M</option>
+                <option value="2m-3m">$2M – $3M</option>
+                <option value="over3m">Over $3M</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="timeline">Timeline</label>
+              <select id="timeline" name="timeline">
+                <option value="">Select timeline</option>
+                <option value="asap">As soon as possible</option>
+                <option value="3months">Within 3 months</option>
+                <option value="6months">3–6 months</option>
+                <option value="year">6–12 months</option>
+                <option value="exploring">Just exploring</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" rows="4" placeholder="Tell me about what you're looking for, any specific neighborhoods, must-haves, or questions…" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;padding:14px">Send Message</button>
+            <p id="formStatus" class="form-status" style="text-align:center"></p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">Suman Jampany</div>
+        <p class="footer-tagline">Licensed Real Estate Agent · DRE #00000000</p>
+        <p style="margin-top:10px;font-size:0.84rem;">Serving Saratoga, Los Gatos, Monte Sereno, San Jose &amp; the greater Bay Area.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="search.html">Search Homes</a></li>
+          <li><a href="featured-listings.html">Featured Listings</a></li>
+          <li><a href="about.html">About Suman</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>📞 <a href="tel:+14085551234">(408) 555-1234</a></p>
+        <p style="margin-top:6px">✉️ <a href="mailto:suman@sumanjampany.com">suman@sumanjampany.com</a></p>
+        <p style="margin-top:6px">📍 123 Main Street, Suite 200<br>Saratoga, CA 95070</p>
+      </div>
+    </div>
+    <p class="footer-bottom">&copy; 2026 Suman Jampany Real Estate. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/scripts.js"></script>
 </body>
 </html>

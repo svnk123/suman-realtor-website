@@ -1,0 +1,195 @@
+/* ── Featured Listings Page ── */
+
+/* Filter bar */
+.fl-filter-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  position: sticky;
+  top: 68px;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+.fl-filter-inner {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.fl-filter-inner select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--white);
+  cursor: pointer;
+  min-width: 130px;
+}
+.fl-filter-inner select:focus { outline: none; border-color: var(--primary); }
+.fl-count {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+/* Section */
+.fl-section { background: var(--bg-light); padding: 32px 0 48px; }
+
+/* Grid — 2 columns on wide, 1 on mobile */
+.fl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 24px;
+}
+
+/* Card */
+.fl-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.fl-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+/* Image panel */
+.fl-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.fl-img-wrap img {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.fl-card:hover .fl-img-wrap img { transform: scale(1.03); }
+
+.fl-badge {
+  position: absolute;
+  top: 12px; left: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.badge-new  { background: #e8f5e9; color: #2e7d32; }
+.badge-hot  { background: #fff3e0; color: #e65100; }
+.badge-open { background: #e3f2fd; color: #1565c0; }
+
+.fl-save {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  width: 34px; height: 34px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform var(--transition), background var(--transition);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.fl-save:hover { transform: scale(1.15); background: var(--white); }
+
+/* Info panel */
+.fl-info {
+  padding: 20px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fl-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+.fl-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.fl-addr {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.fl-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 4px 0;
+}
+.fl-desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  flex: 1;
+}
+.fl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.fl-tags span {
+  background: var(--accent-light);
+  color: #7a5c00;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+.fl-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.fl-actions .btn {
+  padding: 9px 14px;
+  font-size: 0.82rem;
+  flex: 1;
+  text-align: center;
+}
+
+/* Empty state */
+.fl-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-light);
+}
+.fl-empty h3 { color: var(--text); font-size: 1.2rem; margin-bottom: 8px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .fl-grid { grid-template-columns: 1fr; }
+  .fl-card { grid-template-columns: 1fr; }
+  .fl-img-wrap img { min-height: 220px; height: 220px; }
+  .fl-filter-bar { top: 0; }
+}
+@media (max-width: 500px) {
+  .fl-filter-inner { flex-direction: column; width: 100%; }
+  .fl-filter-inner select { min-width: unset; width: 100%; }
+  .fl-actions { flex-direction: column; }
+}
