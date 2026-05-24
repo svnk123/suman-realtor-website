@@ -419,7 +419,6 @@
                 </div>
               </div>
               <div class="result-price" id="priceConservative">—<span id="loanConservative"></span></div>
-              <div class="result-breakdown" id="breakdownConservative"></div>
             </div>
 
             <!-- Moderate -->
@@ -432,7 +431,6 @@
                 </div>
               </div>
               <div class="result-price" id="priceModerate">—<span id="loanModerate"></span></div>
-              <div class="result-breakdown" id="breakdownModerate"></div>
             </div>
 
             <!-- Maximum -->
@@ -445,7 +443,6 @@
                 </div>
               </div>
               <div class="result-price" id="priceMaximum">—<span id="loanMaximum"></span></div>
-              <div class="result-breakdown" id="breakdownMaximum"></div>
             </div>
 
             <!-- CTA -->
@@ -600,7 +597,7 @@ function buildBreakdown(homePrice, annualRate, termYears, annualTaxRate, annualI
 function renderCard(idPrefix, homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa) {
   if (homePrice <= 0) {
     document.getElementById('price' + idPrefix).innerHTML = '<span style="color:#e74c3c;font-size:1rem">Income may be too low for this scenario</span>';
-    document.getElementById('breakdown' + idPrefix).innerHTML = '';
+    // breakdown section removed
     return;
   }
   const b = buildBreakdown(homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa);
@@ -608,12 +605,7 @@ function renderCard(idPrefix, homePrice, annualRate, termYears, annualTaxRate, a
     fmtShort(homePrice) +
     '<span>Max purchase price &nbsp;·&nbsp; Loan: ' + fmtShort(b.loan) + '</span>';
 
-  document.getElementById('breakdown' + idPrefix).innerHTML = `
-    <div class="breakdown-item" style="grid-column:1/-1;background:#e8eef5">
-      <div class="b-label">Est. Total Monthly Payment (PITI)</div>
-      <div class="b-value" style="color:var(--primary);font-size:1.05rem">${fmt(b.total)}/mo</div>
-    </div>
-  `;
+  // breakdown section removed
 }
 
 function calculateAffordability() {
