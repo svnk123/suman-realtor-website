@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free home affordability calculator for Tennessee buyers. Estimate how much home you can afford in Nashville, Franklin, Brentwood and more.">
+  <title>How Much Can I Afford? - HomeKey Group TN</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* ── Calculator Page ── */
+    .calc-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* Input panel */
+    .calc-panel {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      padding: 28px;
+    }
+    .calc-panel h2 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent-light);
+      text-align: left;
+    }
+    .calc-group {
+      margin-bottom: 18px;
+    }
+    .calc-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .calc-group label span {
+      font-weight: 400;
+      color: var(--text-light);
+      font-size: 0.8rem;
+    }
+    .calc-input-wrap {
+      position: relative;
+    }
+    .calc-prefix, .calc-suffix {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .calc-prefix { left: 12px; }
+    .calc-suffix { right: 12px; }
+    .calc-input-wrap input,
+    .calc-input-wrap select {
+      width: 100%;
+      padding: 10px 36px 10px 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      color: var(--text);
+      background: var(--white);
+      transition: border-color 0.2s;
+    }
+    .calc-input-wrap.no-prefix input,
+    .calc-input-wrap.no-prefix select {
+      padding-left: 12px;
+    }
+    .calc-input-wrap.no-suffix input {
+      padding-right: 12px;
+    }
+    .calc-input-wrap input:focus,
+    .calc-input-wrap select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26,82,118,0.08);
+    }
+    .calc-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+    .calc-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Slider range */
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .range-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--primary);
+      padding: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
+    .range-val {
+      min-width: 64px;
+      text-align: right;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.92rem;
+    }
+
+    /* Results panel */
+    .results-panel {
+      position: sticky;
+      top: 80px;
+    }
+    .result-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .result-card-header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .result-card-header.conservative { background: #e8f5e9; }
+    .result-card-header.moderate     { background: #e3f2fd; }
+    .result-card-header.maximum      { background: #fff3e0; }
+    .result-card-header h3 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .result-card-header.conservative h3 { color: #2e7d32; }
+    .result-card-header.moderate     h3 { color: #1565c0; }
+    .result-card-header.maximum      h3 { color: #e65100; }
+    .result-card-header p { font-size: 0.78rem; color: var(--text-light); }
+    .result-icon { font-size: 1.4rem; }
+
+    .result-price {
+      padding: 16px 20px 6px;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .result-price span {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-light);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .result-breakdown {
+      padding: 0 20px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .breakdown-item {
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+    }
+    .breakdown-item .b-label {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .breakdown-item .b-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Empty state */
+    .results-empty {
+      background: var(--bg-light);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--text-light);
+    }
+    .results-empty .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .results-empty h3 { color: var(--text); margin-bottom: 6px; }
+
+    /* Disclaimer */
+    .disclaimer-box {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-top: 16px;
+    }
+    .disclaimer-box p {
+      font-size: 0.78rem;
+      color: #5d4037;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .disclaimer-box p:last-child { margin-bottom: 0; }
+    .disclaimer-box strong { color: #4e342e; }
+
+    /* TN county info strip */
+    .tn-strip {
+      background: var(--primary);
+      color: var(--white);
+      padding: 20px 24px;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 0;
+    }
+    .tn-stat { text-align: center; }
+    .tn-stat strong { display: block; font-size: 1.3rem; font-weight: 800; color: var(--accent); }
+    .tn-stat span { font-size: 0.75rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* CTA strip */
+    .calc-cta {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .calc-cta h4 { color: var(--primary); margin-bottom: 6px; font-size: 0.97rem; }
+    .calc-cta p { font-size: 0.84rem; color: var(--text-light); margin-bottom: 12px; }
+
+    @media (max-width: 860px) {
+      .calc-wrapper { grid-template-columns: 1fr; }
+      .results-panel { position: static; }
+    }
+    @media (max-width: 480px) {
+      .result-breakdown { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="../">
+        <img src="../img/logo.svg" alt="HomeKey Group TN" style="height:42px;display:block">
+      </a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="../">Home</a></li>
+      <li><a href="../search/">Search</a></li>
+      <li><a href="../listings/">Listings</a></li>
+      <li><a href="../calculator/" class="active">Affordability</a></li>
+      <li><a href="../about/">About</a></li>
+      <li><a href="../contact/">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section class="page-hero">
+    <h1>💰 How Much Home Can I Afford?</h1>
+    <p>Tennessee-specific calculator for buyers in Nashville, Franklin, Brentwood &amp; surrounding areas</p>
+  </section>
+
+  <!-- TN market context strip -->
+  <div class="tn-strip">
+    <div class="tn-stat"><strong>$462K</strong><span>Nashville Median</span></div>
+    <div class="tn-stat"><strong>$685K</strong><span>Franklin Median</span></div>
+    <div class="tn-stat"><strong>$720K</strong><span>Brentwood Median</span></div>
+    <div class="tn-stat"><strong>0%</strong><span>TN State Income Tax</span></div>
+    <div class="tn-stat"><strong>~0.7%</strong><span>Avg Property Tax Rate</span></div>
+    <div class="tn-stat"><strong>30yr ~6.9%</strong><span>Current Rate (est.)</span></div>
+  </div>
+
+  <section style="background:var(--bg-light)">
+    <div class="container">
+      <div class="calc-wrapper">
+
+        <!-- ── Input Panel ── -->
+        <div>
+          <div class="calc-panel">
+            <h2>📋 Your Financial Information</h2>
+
+            <div class="calc-group">
+              <label>Gross Annual Income <span>Before taxes</span></label>
+              <div class="calc-input-wrap">
+                <span class="calc-prefix">$</span>
+                <input type="number" id="income" placeholder="120,000" min="0" step="1000" value="">
+              </div>
+            </div>
+
+            <div class="calc-group">
+              <label>Monthly Debt Payments <span>Car, student loans, credit cards</span></label>
+              <div class="calc-input-wrap">
+                <span class="calc-prefix">$</span>
+                <input type="number" id="debts" placeholder="500" min="0" step="50" value="0">
+              </div>
+            </div>
+
+            <div class="calc-group">
+              <label>Down Payment <span>Cash available to put down</span></label>
+              <div class="calc-input-wrap">
+                <span class="calc-prefix">$</span>
+                <input type="number" id="downPayment" placeholder="60,000" min="0" step="1000" value="">
+              </div>
+            </div>
+
+            <hr class="calc-divider">
+
+            <div class="calc-group">
+              <label>Interest Rate <span>Current 30yr avg ~6.9%</span></label>
+              <div class="range-row">
+                <input type="range" id="rateSlider" min="4" max="12" step="0.1" value="6.9">
+                <span class="range-val" id="rateDisplay">6.9%</span>
+              </div>
+            </div>
+
+            <div class="calc-group">
+              <label>Loan Term</label>
+              <div class="calc-input-wrap no-prefix no-suffix">
+                <select id="loanTerm">
+                  <option value="30">30 Years (most common)</option>
+                  <option value="20">20 Years</option>
+                  <option value="15">15 Years (lower interest)</option>
+                  <option value="10">10 Years</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="calc-group">
+              <label>Tennessee County <span>Affects property tax estimate</span></label>
+              <div class="calc-input-wrap no-prefix no-suffix">
+                <select id="county">
+                  <option value="0.0056">Williamson County (Franklin, Brentwood) ~0.56%</option>
+                  <option value="0.0105" selected>Davidson County (Nashville) ~1.05%</option>
+                  <option value="0.0065">Rutherford County (Murfreesboro) ~0.65%</option>
+                  <option value="0.0060">Wilson County (Lebanon, Mt. Juliet) ~0.60%</option>
+                  <option value="0.0062">Sumner County (Hendersonville, Gallatin) ~0.62%</option>
+                  <option value="0.0058">Maury County (Columbia, Spring Hill) ~0.58%</option>
+                  <option value="0.0070">Other Tennessee County ~0.70%</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="calc-group">
+              <label>Monthly HOA Fees <span>If applicable (condos, communities)</span></label>
+              <div class="calc-input-wrap">
+                <span class="calc-prefix">$</span>
+                <input type="number" id="hoa" placeholder="0" min="0" step="25" value="0">
+              </div>
+            </div>
+
+            <div class="calc-group">
+              <label>Homeowner's Insurance <span>Annual estimate</span></label>
+              <div class="calc-input-wrap">
+                <span class="calc-prefix">$</span>
+                <input type="number" id="insurance" placeholder="2,400" min="0" step="100" value="2400">
+              </div>
+            </div>
+
+            <button class="btn btn-primary calc-btn" onclick="calculateAffordability()">
+              Calculate My Affordability
+            </button>
+          </div>
+
+          <!-- Disclaimer always visible below inputs -->
+          <div class="disclaimer-box" style="margin-top:16px">
+            <p><strong>⚠️ Important Disclaimer</strong></p>
+            <p>This calculator provides <strong>estimates for informational and educational purposes only</strong>. Results do not constitute financial, mortgage, or legal advice. Actual loan approval, interest rates, and maximum purchase price depend on your full credit profile, employment history, assets, and lender requirements.</p>
+            <p>Property tax figures are approximations based on publicly available county data and may vary. Insurance estimates are averages — actual premiums vary. HOA dues and other fees are not reflected unless entered.</p>
+            <p>Always consult a <strong>licensed mortgage lender or financial advisor</strong> before making real estate decisions. Suman Jampany is a licensed Tennessee real estate agent — not a lender or financial advisor.</p>
+          </div>
+        </div>
+
+        <!-- ── Results Panel ── -->
+        <div class="results-panel">
+
+          <div id="resultsEmpty" class="results-empty">
+            <div class="empty-icon">🏡</div>
+            <h3>Enter your info to see results</h3>
+            <p>Fill in your income, debts, and down payment above, then click Calculate.</p>
+          </div>
+
+          <div id="resultsContent" style="display:none">
+
+            <!-- Conservative -->
+            <div class="result-card">
+              <div class="result-card-header conservative">
+                <span class="result-icon">🟢</span>
+                <div>
+                  <h3>Conservative</h3>
+                  <p>28% front-end DTI · Comfortable payment</p>
+                </div>
+              </div>
+              <div class="result-price" id="priceConservative">—<span id="loanConservative"></span></div>
+              <div class="result-breakdown" id="breakdownConservative"></div>
+            </div>
+
+            <!-- Moderate -->
+            <div class="result-card">
+              <div class="result-card-header moderate">
+                <span class="result-icon">🔵</span>
+                <div>
+                  <h3>Moderate</h3>
+                  <p>36% back-end DTI · Most lenders' standard</p>
+                </div>
+              </div>
+              <div class="result-price" id="priceModerate">—<span id="loanModerate"></span></div>
+              <div class="result-breakdown" id="breakdownModerate"></div>
+            </div>
+
+            <!-- Maximum -->
+            <div class="result-card">
+              <div class="result-card-header maximum">
+                <span class="result-icon">🟠</span>
+                <div>
+                  <h3>Maximum (Stretch)</h3>
+                  <p>43% back-end DTI · FHA / upper limit</p>
+                </div>
+              </div>
+              <div class="result-price" id="priceMaximum">—<span id="loanMaximum"></span></div>
+              <div class="result-breakdown" id="breakdownMaximum"></div>
+            </div>
+
+            <!-- CTA -->
+            <div class="calc-cta">
+              <h4>Ready to find homes in your budget?</h4>
+              <p>Suman can show you exactly what's available in your price range across Tennessee.</p>
+              <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <a href="../search/" class="btn btn-primary">Search Homes</a>
+                <a href="../contact/" class="btn btn-outline">Talk to Suman</a>
+              </div>
+            </div>
+
+          </div><!-- /resultsContent -->
+        </div>
+
+      </div><!-- /calc-wrapper -->
+
+      <!-- How it works -->
+      <div style="margin-top:48px">
+        <div class="section-header">
+          <div class="label">How It Works</div>
+          <h2>Understanding Your Numbers</h2>
+        </div>
+        <div class="why-grid">
+          <div class="why-item">
+            <div class="why-icon">📊</div>
+            <div>
+              <h4>Debt-to-Income (DTI)</h4>
+              <p>Lenders look at your monthly debts vs. gross income. Most prefer back-end DTI under 43%. Lower is better — it means more buying power.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">💵</div>
+            <div>
+              <h4>Down Payment Impact</h4>
+              <p>Putting 20%+ avoids PMI (typically $100–$200/mo). Less than 20% is fine — FHA allows 3.5% down with good credit.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">🏦</div>
+            <div>
+              <h4>Tennessee Taxes</h4>
+              <p>TN has <strong>no state income tax</strong> on wages, making it one of the most affordable states. Property tax varies significantly by county.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">📈</div>
+            <div>
+              <h4>Rate Sensitivity</h4>
+              <p>A 1% change in interest rate affects your buying power by ~10%. Use the slider to see how rate changes impact your max price.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Get Pre-Approved — It's Free</h2>
+      <p>Know your exact budget before you shop. Suman works with top Tennessee lenders to get you pre-approved fast.</p>
+      <a href="../contact/" class="btn btn-primary">Connect with Suman</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <img src="../img/logo.svg" alt="HomeKey Group TN" style="height:40px;margin-bottom:10px;filter:brightness(10)">
+        <p class="footer-tagline">Licensed Tennessee Real Estate Agent · TN License #00000000</p>
+        <p style="margin-top:8px;font-size:0.82rem;opacity:0.7">Serving Davidson, Williamson, Rutherford, Wilson &amp; Sumner Counties.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="../">Home</a></li>
+          <li><a href="../search/">Search Homes</a></li>
+          <li><a href="../listings/">Featured Listings</a></li>
+          <li><a href="../calculator/">Affordability Calc</a></li>
+          <li><a href="../about/">About</a></li>
+          <li><a href="../contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>📞 <a href="tel:+16155551234">(615) 555-1234</a></p>
+        <p style="margin-top:6px">✉️ <a href="mailto:suman@homekeytn.com">suman@homekeytn.com</a></p>
+        <p style="margin-top:10px;font-size:0.78rem;opacity:0.6">Licensed in Tennessee only. Not licensed in any other state. This website is for informational purposes only and does not constitute legal or financial advice.</p>
+      </div>
+    </div>
+    <p class="footer-bottom">&copy; 2026 HomeKey Group TN. All rights reserved. | <a href="#">Privacy Policy</a></p>
+  </div>
+</footer>
+
+<script src="../js/scripts.js"></script>
+<script>
+// Rate slider
+const rateSlider = document.getElementById('rateSlider');
+const rateDisplay = document.getElementById('rateDisplay');
+rateSlider.addEventListener('input', () => {
+  rateDisplay.textContent = parseFloat(rateSlider.value).toFixed(1) + '%';
+});
+
+// Format currency
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+function fmtShort(n) {
+  if (n >= 1000000) return '$' + (n/1000000).toFixed(2) + 'M';
+  if (n >= 1000) return '$' + Math.round(n/1000) + 'K';
+  return fmt(n);
+}
+
+// Max loan from monthly PI payment
+function maxLoanFromPayment(monthlyPI, annualRate, termYears) {
+  const n = termYears * 12;
+  const r = annualRate / 100 / 12;
+  if (r === 0) return monthlyPI * n;
+  return monthlyPI * (1 - Math.pow(1 + r, -n)) / r;
+}
+
+// Monthly PI payment from loan amount
+function monthlyPayment(loan, annualRate, termYears) {
+  const n = termYears * 12;
+  const r = annualRate / 100 / 12;
+  if (r === 0) return loan / n;
+  return loan * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+}
+
+function buildBreakdown(homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa) {
+  const downPct = parseFloat(document.getElementById('downPayment').value) || 0;
+  const loan = Math.max(0, homePrice - downPct);
+  const pi = monthlyPayment(loan, annualRate, termYears);
+  const tax = homePrice * annualTaxRate / 12;
+  const ins = annualInsurance / 12;
+  const total = pi + tax + ins + hoa;
+
+  return {
+    pi: pi,
+    tax: tax,
+    ins: ins,
+    hoa: hoa,
+    total: total,
+    loan: loan
+  };
+}
+
+function renderCard(idPrefix, homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa) {
+  if (homePrice <= 0) {
+    document.getElementById('price' + idPrefix).innerHTML = '<span style="color:#e74c3c">Income too low for this scenario</span>';
+    document.getElementById('breakdown' + idPrefix).innerHTML = '';
+    return;
+  }
+  const b = buildBreakdown(homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa);
+  document.getElementById('price' + idPrefix).innerHTML =
+    fmtShort(homePrice) +
+    '<span>Max purchase price · Loan: ' + fmtShort(b.loan) + '</span>';
+
+  document.getElementById('breakdown' + idPrefix).innerHTML = `
+    <div class="breakdown-item"><div class="b-label">Principal &amp; Interest</div><div class="b-value">${fmt(b.pi)}/mo</div></div>
+    <div class="breakdown-item"><div class="b-label">Est. Property Tax</div><div class="b-value">${fmt(b.tax)}/mo</div></div>
+    <div class="breakdown-item"><div class="b-label">Est. Insurance</div><div class="b-value">${fmt(b.ins)}/mo</div></div>
+    <div class="breakdown-item"><div class="b-label">HOA</div><div class="b-value">${fmt(b.hoa)}/mo</div></div>
+    <div class="breakdown-item" style="grid-column:1/-1;background:#e8eef5"><div class="b-label">Total Monthly Payment</div><div class="b-value" style="color:var(--primary);font-size:1.05rem">${fmt(b.total)}/mo</div></div>
+  `;
+}
+
+function calculateAffordability() {
+  const income       = parseFloat(document.getElementById('income').value);
+  const debts        = parseFloat(document.getElementById('debts').value) || 0;
+  const down         = parseFloat(document.getElementById('downPayment').value) || 0;
+  const rate         = parseFloat(rateSlider.value);
+  const term         = parseInt(document.getElementById('loanTerm').value);
+  const taxRate      = parseFloat(document.getElementById('county').value);
+  const hoa          = parseFloat(document.getElementById('hoa').value) || 0;
+  const insurance    = parseFloat(document.getElementById('insurance').value) || 2400;
+
+  if (!income || income <= 0) {
+    alert('Please enter your gross annual income.');
+    return;
+  }
+
+  const monthlyIncome = income / 12;
+  const monthlyTaxBase = taxRate / 12; // per dollar of home price
+  const monthlyIns = insurance / 12;
+
+  // For each DTI scenario, solve for max home price:
+  // PITI + HOA ≤ DTI × monthlyIncome - debts (back-end)
+  // PI ≤ budget - tax - ins - HOA
+  // PI = maxLoanFromPayment(...) × rate formula
+  // Since tax depends on home price, iterate:
+  function solveMaxPrice(dtiLimit, useBackEnd) {
+    const budget = useBackEnd
+      ? (monthlyIncome * dtiLimit) - debts - hoa - monthlyIns
+      : (monthlyIncome * dtiLimit) - hoa - monthlyIns;
+
+    // Start with PI budget ignoring tax, then iterate
+    let piGuess = budget;
+    let homePrice = 0;
+    for (let i = 0; i < 10; i++) {
+      const loan = maxLoanFromPayment(piGuess, rate, term);
+      homePrice = loan + down;
+      const taxPayment = homePrice * monthlyTaxBase;
+      piGuess = budget - taxPayment;
+      if (piGuess <= 0) return 0;
+    }
+    return Math.max(0, homePrice);
+  }
+
+  const conservative = solveMaxPrice(0.28, false); // front-end, no debts
+  const moderate     = solveMaxPrice(0.36, true);  // back-end 36%
+  const maximum      = solveMaxPrice(0.43, true);  // back-end 43%
+
+  document.getElementById('resultsEmpty').style.display = 'none';
+  document.getElementById('resultsContent').style.display = 'block';
+
+  renderCard('Conservative', conservative, rate, term, taxRate, insurance, hoa);
+  renderCard('Moderate',     moderate,     rate, term, taxRate, insurance, hoa);
+  renderCard('Maximum',      maximum,      rate, term, taxRate, insurance, hoa);
+}
+
+// Allow Enter key to calculate
+document.querySelectorAll('.calc-panel input, .calc-panel select').forEach(el => {
+  el.addEventListener('keydown', e => { if (e.key === 'Enter') calculateAffordability(); });
+});
+</script>
+</body>
+</html>

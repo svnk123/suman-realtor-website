@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" fill="none">
+  <!-- House body -->
+  <rect x="8" y="28" width="36" height="26" rx="2" fill="#1a5276"/>
+  <!-- Roof -->
+  <polygon points="4,30 26,8 48,30" fill="#c9a227"/>
+  <!-- Door -->
+  <rect x="20" y="40" width="12" height="14" rx="2" fill="#ffffff" opacity="0.9"/>
+  <!-- Door knob -->
+  <circle cx="29" cy="47" r="1.5" fill="#c9a227"/>
+  <!-- Left window -->
+  <rect x="11" y="33" width="7" height="6" rx="1" fill="#ffffff" opacity="0.7"/>
+  <!-- Right window -->
+  <rect x="34" y="33" width="7" height="6" rx="1" fill="#ffffff" opacity="0.7"/>
+  <!-- Chimney -->
+  <rect x="34" y="10" width="6" height="14" rx="1" fill="#154360"/>
+  <!-- Key icon: ring -->
+  <circle cx="60" cy="32" r="8" stroke="#c9a227" stroke-width="3" fill="none"/>
+  <circle cx="60" cy="32" r="3.5" fill="#c9a227"/>
+  <!-- Key shaft -->
+  <line x1="68" y1="32" x2="80" y2="32" stroke="#c9a227" stroke-width="3" stroke-linecap="round"/>
+  <!-- Key teeth -->
+  <line x1="74" y1="32" x2="74" y2="38" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="78" y1="32" x2="78" y2="36" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Brand name text -->
+  <text x="92" y="30" font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="800" fill="#1a5276" letter-spacing="-0.3">HomeKey</text>
+  <text x="92" y="48" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="600" fill="#c9a227" letter-spacing="2">GROUP · TN</text>
+</svg>
