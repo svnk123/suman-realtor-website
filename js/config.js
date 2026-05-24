@@ -10,7 +10,7 @@
 const SITE_CONFIG = {
 
   /* ── API Keys ───────────────────────────────────────────────────── */
-  // Get a FREE key: https://rapidapi.com/s.mahmoud97/api/zillow56
+  // Get a FREE key: https://rapidapi.com/datascraper/api/us-real-estate
   // Subscribe to the FREE plan → copy "X-RapidAPI-Key" value below
   rapidApiKey: "YOUR_RAPIDAPI_KEY_HERE",   // ← PASTE YOUR KEY HERE
 

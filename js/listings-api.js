@@ -1,17 +1,28 @@
 /**
  * listings-api.js
- * Fetches real active listings from Zillow via RapidAPI (Zillow56).
+ * Fetches real active listings from the US Real Estate API via RapidAPI.
  *
  * Setup (one-time, free):
- *  1. Go to https://rapidapi.com/s.mahmoud97/api/zillow56
+ *  1. Go to https://rapidapi.com/datascraper/api/us-real-estate
  *  2. Click "Subscribe to Test" → select the FREE plan
  *  3. Copy your API key from the "Header Parameters" panel
  *  4. Paste it into js/config.js → rapidApiKey: "YOUR_KEY_HERE"
+ *
+ * Fallback: If no key is set, falls back to config.js featuredListings.
  */
 
 const ListingsAPI = (() => {
 
-  /* ── Fetch listings from Zillow56 via RapidAPI ── */
+  /* ── Parse "City, ST" into { city, stateCode } ── */
+  function parseLocation(location) {
+    const parts = location.split(',').map(s => s.trim());
+    return {
+      city:      parts[0] || 'Franklin',
+      stateCode: (parts[1] || 'TN').toUpperCase(),
+    };
+  }
+
+  /* ── Fetch listings from US Real Estate API via RapidAPI ── */
   async function fetchForSale(location, limit = 6) {
     const key = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.rapidApiKey : '';
 
@@ -20,58 +31,148 @@ const ListingsAPI = (() => {
       return null;
     }
 
+    const { city, stateCode } = parseLocation(location);
+
     try {
-      const url = `https://zillow56.p.rapidapi.com/search?location=${encodeURIComponent(location)}&status=forSale&sortSelection=priorityscore&listing_type=by_agent`;
+      const params = new URLSearchParams({
+        city,
+        state_code: stateCode,
+        limit: String(limit),
+        offset: '0',
+        sort: 'newest',
+        status: 'for_sale',
+      });
+      const url = `https://us-real-estate.p.rapidapi.com/v2/for-sale?${params}`;
       const res = await fetch(url, {
         method: 'GET',
         headers: {
           'X-RapidAPI-Key':  key,
-          'X-RapidAPI-Host': 'zillow56.p.rapidapi.com',
+          'X-RapidAPI-Host': 'us-real-estate.p.rapidapi.com',
         },
       });
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
-      // Zillow56 returns { results: [...] }
-      const raw = data.results || data.props || [];
-      return raw.slice(0, limit).map(normalizeZillow);
+      // US Real Estate API returns { data: { home_search: { results: [...] } } }
+      const raw = data?.data?.home_search?.results
+               || data?.data?.results
+               || data?.results
+               || [];
+      return raw.slice(0, limit).map(normalizeUSRealEstate);
     } catch (err) {
       console.error('ListingsAPI fetch error:', err);
-      return null; // fall back to config placeholders
+      return null;
     }
   }
 
-  /* ── Normalize Zillow56 response to our internal format ── */
-  function normalizeZillow(p) {
+  /* ── Fetch for rent ── */
+  async function fetchForRent(location, limit = 6) {
+    const key = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.rapidApiKey : '';
+    if (!key || key === 'YOUR_RAPIDAPI_KEY_HERE') return null;
+
+    const { city, stateCode } = parseLocation(location);
+    try {
+      const params = new URLSearchParams({
+        city, state_code: stateCode, limit: String(limit), offset: '0',
+      });
+      const url = `https://us-real-estate.p.rapidapi.com/v2/for-rent?${params}`;
+      const res = await fetch(url, {
+        headers: {
+          'X-RapidAPI-Key':  key,
+          'X-RapidAPI-Host': 'us-real-estate.p.rapidapi.com',
+        },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const raw = data?.data?.home_search?.results || data?.data?.results || data?.results || [];
+      return raw.slice(0, limit).map(normalizeUSRealEstate);
+    } catch (err) {
+      console.error('ListingsAPI rent fetch error:', err);
+      return null;
+    }
+  }
+
+  /* ── Fetch recently sold ── */
+  async function fetchSold(location, limit = 6) {
+    const key = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.rapidApiKey : '';
+    if (!key || key === 'YOUR_RAPIDAPI_KEY_HERE') return null;
+
+    const { city, stateCode } = parseLocation(location);
+    try {
+      const params = new URLSearchParams({
+        city, state_code: stateCode, limit: String(limit), offset: '0',
+      });
+      const url = `https://us-real-estate.p.rapidapi.com/v2/recently-sold?${params}`;
+      const res = await fetch(url, {
+        headers: {
+          'X-RapidAPI-Key':  key,
+          'X-RapidAPI-Host': 'us-real-estate.p.rapidapi.com',
+        },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const raw = data?.data?.home_search?.results || data?.data?.results || data?.results || [];
+      return raw.slice(0, limit).map(normalizeUSRealEstate);
+    } catch (err) {
+      console.error('ListingsAPI sold fetch error:', err);
+      return null;
+    }
+  }
+
+  /* ── Normalize US Real Estate API response to our internal format ── */
+  function normalizeUSRealEstate(p) {
+    const desc = p.description || {};
+    const loc  = p.location?.address || {};
+    const price = p.list_price || p.price || p.sold_price || 0;
+    const photos = p.photos || p.primary_photo ? [p.primary_photo] : [];
+    const photo  = p.primary_photo?.href || (photos[0] && photos[0].href) || '';
+
+    const beds  = desc.beds  || p.beds  || '—';
+    const baths = desc.baths || p.baths || (desc.baths_full ? desc.baths_full + (desc.baths_half ? '.5' : '') : '—');
+    const sqft  = desc.sqft  || p.sqft  || 0;
+    const type  = desc.type  || p.sub_type || p.type || 'Home';
+
+    // Build a readable title
+    const title = [beds !== '—' ? beds + ' Bed' : '', formatType(type), '—', loc.city || ''].filter(Boolean).join(' ');
+
+    // Detail URL
+    let detailUrl = p.permalink
+      ? `https://www.realtor.com/realestateandhomes-detail/${p.permalink}`
+      : (p.href || '#');
+
     return {
-      title:     [p.bedrooms, 'Bed', p.propertyType || 'Home'].filter(Boolean).join(' '),
-      address:   p.streetAddress || p.address || '',
-      city:      p.city  || '',
-      state:     p.state || 'TN',
-      zip:       p.zipcode || '',
-      beds:      p.bedrooms  || '—',
-      baths:     p.bathrooms || '—',
-      sqft:      p.livingArea ? Number(p.livingArea).toLocaleString() : '—',
-      price:     p.price  ? '$' + Number(p.price).toLocaleString() : 'Call for Price',
-      badge:     p.listingStatus === 'NEW' ? 'New Listing' : (p.openHouse ? 'Open House' : ''),
-      badgeClass: p.listingStatus === 'NEW' ? 'badge-new' : 'badge-hot',
-      image:     p.imgSrc || p.carouselPhotos?.[0]?.url || '',
-      detailUrl: p.detailUrl
-                   ? (p.detailUrl.startsWith('http') ? p.detailUrl : 'https://www.zillow.com' + p.detailUrl)
-                   : 'https://www.zillow.com',
-      source:    'zillow',
+      title,
+      address:   loc.line  || loc.street || '',
+      city:      loc.city  || '',
+      state:     loc.state_code || 'TN',
+      zip:       loc.postal_code || '',
+      beds,
+      baths,
+      sqft:      sqft ? Number(sqft).toLocaleString() : '—',
+      price:     price ? '$' + Number(price).toLocaleString() : 'Call for Price',
+      badge:     p.flags?.is_new_listing ? 'New Listing' : (p.flags?.is_price_reduced ? 'Price Drop' : ''),
+      badgeClass: p.flags?.is_new_listing ? 'badge-new' : 'badge-hot',
+      image:     photo,
+      detailUrl,
+      source:    'realtor',
     };
   }
 
+  function formatType(t) {
+    if (!t) return 'Home';
+    const map = { single_family: 'Home', condo: 'Condo', townhouse: 'Townhome',
+                  multi_family: 'Multi-Family', land: 'Land', mobile: 'Mobile Home' };
+    return map[t.toLowerCase()] || t;
+  }
+
   /* ── Render listings into a container element ── */
-  function render(listings, container, options = {}) {
+  function render(listings, container) {
     if (!container) return;
-    const { compact = false } = options;
 
     if (!listings || listings.length === 0) {
       container.innerHTML = `
-        <div class="search-empty-state" style="grid-column:1/-1;text-align:center;padding:48px 20px">
+        <div style="grid-column:1/-1;text-align:center;padding:48px 20px">
           <div style="font-size:2.5rem;margin-bottom:12px">🏠</div>
           <h3 style="color:var(--text)">No listings found</h3>
           <p style="color:var(--text-light)">Try a different city or check back soon.</p>
@@ -83,7 +184,7 @@ const ListingsAPI = (() => {
       <div class="listing-card">
         ${l.badge ? `<span class="listing-badge ${l.badgeClass}">${l.badge}</span>` : ''}
         ${l.image
-          ? `<img class="listing-img" src="${l.image}" alt="${l.title} in ${l.city}, ${l.state}" loading="lazy" onerror="this.style.display='none'">`
+          ? `<img class="listing-img" src="${l.image}" alt="${l.title}" loading="lazy" onerror="this.style.display='none'">`
           : `<div class="listing-img" style="background:linear-gradient(135deg,#c8d8e8,#a8b8c8);display:flex;align-items:center;justify-content:center;font-size:2.5rem">🏠</div>`
         }
         <div class="listing-info">
@@ -95,7 +196,7 @@ const ListingsAPI = (() => {
             ${l.sqft !== '—' ? `<span>📐 ${l.sqft} sqft</span>` : ''}
           </div>
           <div class="listing-price">${l.price}</div>
-          <a href="${l.detailUrl}" target="_blank" rel="noopener" class="btn btn-outline">View on Zillow ↗</a>
+          <a href="${l.detailUrl}" target="_blank" rel="noopener" class="btn btn-outline">View on Realtor.com ↗</a>
         </div>
       </div>
     `).join('');
@@ -116,7 +217,7 @@ const ListingsAPI = (() => {
     `).join('');
   }
 
-  /* ── Load and render into a container, with fallback to config ── */
+  /* ── Load for-sale and render into a container, with fallback to config ── */
   async function loadInto(containerId, location, limit = 6) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -127,40 +228,34 @@ const ListingsAPI = (() => {
 
     if (listings) {
       render(listings, container);
-
-      // Add Zillow attribution (required by their ToS)
+      // Attribution
       const attr = document.createElement('p');
       attr.style.cssText = 'text-align:center;font-size:0.75rem;color:var(--text-light);margin-top:12px;grid-column:1/-1';
-      attr.innerHTML = 'Listing data provided by <a href="https://www.zillow.com" target="_blank" rel="noopener" style="color:var(--primary)">Zillow</a>. Data is for informational purposes only. Always verify with a licensed agent.';
+      attr.innerHTML = 'Listing data provided by <a href="https://www.realtor.com" target="_blank" rel="noopener" style="color:var(--primary)">Realtor.com</a>. For informational purposes only. Verify with a licensed agent.';
       container.after(attr);
     } else {
-      // Fall back to config.js placeholder listings
+      // Fall back to config.js featured listings
       if (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.featuredListings) {
-        const cfgEvent = new Event('DOMContentLoaded');
-        // Re-trigger config rendering for this container
-        const cfgContainer = document.getElementById('cfg-featured-listings') || container;
-        if (cfgContainer && SITE_CONFIG.featuredListings) {
-          cfgContainer.innerHTML = SITE_CONFIG.featuredListings.map(l => `
-            <div class="listing-card">
-              ${l.badge ? `<span class="listing-badge ${l.badgeClass}">${l.badge}</span>` : ''}
-              <img class="listing-img" src="${l.image}" alt="${l.title}" loading="lazy" crossorigin="anonymous">
-              <div class="listing-info">
-                <h3>${l.title}</h3>
-                <p class="listing-address">📍 ${l.address}, ${l.city}, ${l.state} ${l.zip}</p>
-                <div class="listing-details">
-                  <span>🛏 ${l.beds} Beds</span><span>🚿 ${l.baths} Baths</span><span>📐 ${l.sqft} sqft</span>
-                </div>
-                <div class="listing-price">${l.price}</div>
-                <a href="${l.detailUrl}" class="btn btn-outline">View Details</a>
+        container.innerHTML = SITE_CONFIG.featuredListings.map(l => `
+          <div class="listing-card">
+            ${l.badge ? `<span class="listing-badge ${l.badgeClass}">${l.badge}</span>` : ''}
+            <img class="listing-img" src="${l.image}" alt="${l.title}" loading="lazy" crossorigin="anonymous">
+            <div class="listing-info">
+              <h3>${l.title}</h3>
+              <p class="listing-address">📍 ${l.address}, ${l.city}, ${l.state} ${l.zip}</p>
+              <div class="listing-details">
+                <span>🛏 ${l.beds} Beds</span><span>🚿 ${l.baths} Baths</span><span>📐 ${l.sqft} sqft</span>
               </div>
+              <div class="listing-price">${l.price}</div>
+              <a href="${l.detailUrl}" class="btn btn-outline">View Details</a>
             </div>
-          `).join('');
-        }
+          </div>
+        `).join('');
       }
     }
   }
 
-  return { fetchForSale, render, showSkeleton, loadInto };
+  return { fetchForSale, fetchForRent, fetchSold, render, showSkeleton, loadInto };
 })();
 
 /* ── Pulse animation for skeleton ── */

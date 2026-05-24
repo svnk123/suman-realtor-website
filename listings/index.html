@@ -104,6 +104,7 @@
         <option value="forRent">For Rent</option>
         <option value="sold">Recently Sold</option>
       </select>
+
       <select id="limitSel">
         <option value="6">6 results</option>
         <option value="12" selected>12 results</option>
@@ -121,7 +122,7 @@
       <!-- API key notice (shown only if no key is set) -->
       <div class="api-note" id="apiNote">
         ⚠️ <strong>API key not set.</strong> Add your free RapidAPI key to <code>js/config.js → rapidApiKey</code> to load live listings.
-        <a href="https://rapidapi.com/s.mahmoud97/api/zillow56" target="_blank" rel="noopener">Get free key →</a>
+        <a href="https://rapidapi.com/datascraper/api/us-real-estate" target="_blank" rel="noopener">Get free key →</a>
       </div>
 
       <div class="listings-grid" id="liveListingsGrid"></div>
@@ -188,36 +189,17 @@
       note.classList.add('visible');
     }
 
-    // Use Zillow56 with status param
+    // Use US Real Estate API via RapidAPI
     let listings = null;
     if (key && key !== 'YOUR_RAPIDAPI_KEY_HERE') {
       try {
-        const url = `https://zillow56.p.rapidapi.com/search?location=${encodeURIComponent(city)}&status=${status}&sortSelection=priorityscore`;
-        const res = await fetch(url, {
-          headers: {
-            'X-RapidAPI-Key':  key,
-            'X-RapidAPI-Host': 'zillow56.p.rapidapi.com',
-          },
-        });
-        const data = await res.json();
-        const raw = data.results || data.props || [];
-        listings = raw.slice(0, limit).map(p => ({
-          title:     [p.bedrooms, 'Bed', p.propertyType || 'Home'].filter(Boolean).join(' '),
-          address:   p.streetAddress || p.address || '—',
-          city:      p.city || city.split(',')[0],
-          state:     p.state || 'TN',
-          zip:       p.zipcode || '',
-          beds:      p.bedrooms  || '—',
-          baths:     p.bathrooms || '—',
-          sqft:      p.livingArea ? Number(p.livingArea).toLocaleString() : '—',
-          price:     p.price ? '$' + Number(p.price).toLocaleString() : 'Call for Price',
-          badge:     p.listingStatus === 'NEW' ? 'New Listing' : (p.openHouse ? 'Open House' : ''),
-          badgeClass: 'badge-new',
-          image:     p.imgSrc || '',
-          detailUrl: p.detailUrl
-                       ? (p.detailUrl.startsWith('http') ? p.detailUrl : 'https://www.zillow.com' + p.detailUrl)
-                       : '#',
-        }));
+        if (status === 'forSale') {
+          listings = await ListingsAPI.fetchForSale(city, limit);
+        } else if (status === 'forRent') {
+          listings = await ListingsAPI.fetchForRent(city, limit);
+        } else {
+          listings = await ListingsAPI.fetchSold(city, limit);
+        }
       } catch(e) {
         console.error(e);
         listings = null;
@@ -228,10 +210,10 @@
       ListingsAPI.render(listings, grid);
       statusEl.innerHTML = `<span class="dot"></span> ${listings.length} live results · ${city}`;
 
-      // Zillow attribution
+      // Attribution
       const attr = document.createElement('p');
       attr.style.cssText = 'text-align:center;font-size:0.75rem;color:var(--text-light);margin-top:16px;grid-column:1/-1';
-      attr.innerHTML = 'Listing data provided by <a href="https://www.zillow.com" target="_blank" rel="noopener" style="color:var(--primary)">Zillow</a> via RapidAPI. For informational purposes only — verify with a licensed agent.';
+      attr.innerHTML = 'Listing data provided by <a href="https://www.realtor.com" target="_blank" rel="noopener" style="color:var(--primary)">Realtor.com</a> via RapidAPI. For informational purposes only — verify with a licensed agent.';
       grid.after(attr);
     } else {
       grid.innerHTML = `
@@ -239,7 +221,7 @@
           <div style="font-size:3rem;margin-bottom:12px">🔑</div>
           <h3 style="color:var(--text);margin-bottom:8px">Add your API key to load live listings</h3>
           <p>Open <code>js/config.js</code> and set <code>rapidApiKey</code> to your free RapidAPI key.</p>
-          <a href="https://rapidapi.com/s.mahmoud97/api/zillow56" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:16px">Get Free API Key →</a>
+          <a href="https://rapidapi.com/datascraper/api/us-real-estate" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:16px">Get Free API Key →</a>
         </div>`;
       statusEl.innerHTML = '<span class="dot" style="background:#e74c3c"></span> No key set';
     }
