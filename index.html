@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="HomeKey Group TN — Tennessee real estate agent helping buyers and sellers in Nashville, Franklin, Brentwood, Murfreesboro and surrounding counties.">
+  <meta name="description" content="Tennessee real estate agent helping buyers and sellers in Nashville, Franklin, Brentwood, Murfreesboro and surrounding counties.">
   <title>HomeKey Group TN - Tennessee Real Estate</title>
   <link rel="stylesheet" href="css/styles.css">
   <style>
-    .navbar .logo a { display: flex; align-items: center; }
-    .navbar .logo img { height: 44px; display: block; }
-    .navbar .logo span { display: none; }
+    .navbar .logo a { display:flex; align-items:center; }
+    .navbar .logo img { height:44px; display:block; }
+    .navbar .logo span { display:none; }
   </style>
 </head>
 <body>
@@ -17,9 +17,7 @@
 <header>
   <nav class="navbar">
     <div class="logo">
-      <a href="/">
-        <img src="img/logo.svg" alt="HomeKey Group TN">
-      </a>
+      <a href="/"><img src="img/logo.svg" alt="HomeKey Group TN"></a>
     </div>
     <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
     <ul class="nav-links">
@@ -35,7 +33,7 @@
 
 <main>
 
-  <!-- ── Hero ── -->
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
       <h1>Find Your Perfect Home in Tennessee</h1>
@@ -50,26 +48,17 @@
         <a href="/listings/" class="btn btn-secondary">Browse Listings</a>
         <a href="/calculator/" class="btn btn-accent">💰 What Can I Afford?</a>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat"><strong>150+</strong><span>Homes Sold</span></div>
-        <div class="hero-stat"><strong>12+</strong><span>Years in TN</span></div>
-        <div class="hero-stat"><strong>98%</strong><span>Client Satisfaction</span></div>
-        <div class="hero-stat"><strong>$95M+</strong><span>Total Sales</span></div>
-      </div>
+      <!-- Populated by config.js -->
+      <div class="hero-stats" id="cfg-hero-stats"></div>
     </div>
   </section>
 
-  <!-- ── Market Stats ── -->
+  <!-- Market Stats — populated by config.js -->
   <div class="market-strip">
-    <div class="market-strip-inner">
-      <div class="market-stat"><strong>$462K</strong><span>Nashville Median</span></div>
-      <div class="market-stat"><strong>$685K</strong><span>Franklin Median</span></div>
-      <div class="market-stat"><strong>22</strong><span>Avg. Days on Market</span></div>
-      <div class="market-stat"><strong>0%</strong><span>TN State Income Tax</span></div>
-    </div>
+    <div class="market-strip-inner" id="cfg-market-stats"></div>
   </div>
 
-  <!-- ── Services ── -->
+  <!-- Services -->
   <section class="services">
     <div class="container">
       <div class="section-header">
@@ -91,7 +80,7 @@
         <div class="service-card">
           <div class="service-icon">🏦</div>
           <h3>Loan Officer Guidance</h3>
-          <p>Connected to top Tennessee lenders. Get pre-approved, compare rates, and understand every loan option — FHA, VA, USDA, Conventional.</p>
+          <p>Connected to top Tennessee lenders. Get pre-approved and compare FHA, VA, USDA, and Conventional rates.</p>
         </div>
         <div class="service-card">
           <div class="service-icon">📈</div>
@@ -102,16 +91,16 @@
     </div>
   </section>
 
-  <!-- ── Affordability CTA strip ── -->
+  <!-- Affordability CTA strip -->
   <div style="background:var(--accent-light);border-top:1px solid #e8d5a0;border-bottom:1px solid #e8d5a0;padding:28px 24px;text-align:center">
     <div style="max-width:640px;margin:0 auto">
       <h3 style="color:var(--primary);margin-bottom:8px;font-size:1.15rem">🏡 Not sure what you can afford?</h3>
-      <p style="color:var(--text-light);margin-bottom:16px;font-size:0.93rem">Use our free Tennessee affordability calculator — see conservative, moderate, and maximum home prices based on your income, debts, and down payment. Includes county-specific property tax.</p>
+      <p style="color:var(--text-light);margin-bottom:16px;font-size:0.93rem">Use our free Tennessee affordability calculator — see conservative, moderate, and maximum home prices based on your income, debts, and down payment. Includes county-specific property tax estimates.</p>
       <a href="/calculator/" class="btn btn-accent">Try the Affordability Calculator →</a>
     </div>
   </div>
 
-  <!-- ── Featured Listings ── -->
+  <!-- Featured Listings — populated by config.js -->
   <section class="featured-listings">
     <div class="container">
       <div class="section-header">
@@ -119,50 +108,8 @@
         <h2>Featured Tennessee Properties</h2>
         <p>Hand-picked homes available right now in Middle Tennessee</p>
       </div>
-      <div class="listings-grid">
-
-        <div class="listing-card">
-          <span class="listing-badge badge-new">New Listing</span>
-          <img class="listing-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=420&fit=crop" alt="Colonial home in Franklin TN" loading="lazy" crossorigin="anonymous">
-          <div class="listing-info">
-            <h3>Classic Colonial — Franklin</h3>
-            <p class="listing-address">📍 142 Oakwood Drive, Franklin, TN 37064</p>
-            <div class="listing-details">
-              <span>🛏 4 Beds</span><span>🚿 3 Baths</span><span>📐 2,640 sqft</span>
-            </div>
-            <div class="listing-price">$724,900</div>
-            <a href="/listings/" class="btn btn-outline">View Details</a>
-          </div>
-        </div>
-
-        <div class="listing-card">
-          <span class="listing-badge badge-hot">Open House Sun</span>
-          <img class="listing-img" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=420&fit=crop" alt="Contemporary home in Brentwood TN" loading="lazy" crossorigin="anonymous">
-          <div class="listing-info">
-            <h3>Contemporary Home — Brentwood</h3>
-            <p class="listing-address">📍 87 Hillcrest Blvd, Brentwood, TN 37027</p>
-            <div class="listing-details">
-              <span>🛏 3 Beds</span><span>🚿 2.5 Baths</span><span>📐 1,980 sqft</span>
-            </div>
-            <div class="listing-price">$849,000</div>
-            <a href="/listings/" class="btn btn-outline">View Details</a>
-          </div>
-        </div>
-
-        <div class="listing-card">
-          <span class="listing-badge badge-open">Price Reduced</span>
-          <img class="listing-img" src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&h=420&fit=crop" alt="Luxury home in Nashville TN" loading="lazy" crossorigin="anonymous">
-          <div class="listing-info">
-            <h3>Luxury Estate — Nashville</h3>
-            <p class="listing-address">📍 215 Lakeview Court, Nashville, TN 37215</p>
-            <div class="listing-details">
-              <span>🛏 5 Beds</span><span>🚿 4 Baths</span><span>📐 4,100 sqft</span>
-            </div>
-            <div class="listing-price">$1,450,000</div>
-            <a href="/listings/" class="btn btn-outline">View Details</a>
-          </div>
-        </div>
-
+      <div class="listings-grid" id="cfg-featured-listings">
+        <!-- Rendered by config.js -->
       </div>
       <div class="section-cta">
         <a href="/listings/" class="btn btn-primary">View All Listings</a>
@@ -170,15 +117,15 @@
     </div>
   </section>
 
-  <!-- ── Why HomeKey ── -->
+  <!-- Why section -->
   <section class="why-strip">
     <div class="container">
       <div class="section-header">
-        <div class="label">Why HomeKey Group</div>
+        <div class="label">Why Choose Us</div>
         <h2>The HomeKey Advantage</h2>
       </div>
       <div class="why-grid">
-        <div class="why-item"><div class="why-icon">🏆</div><div><h4>Top Tennessee Agent</h4><p>Consistently ranked in the top producers for Middle Tennessee residential sales.</p></div></div>
+        <div class="why-item"><div class="why-icon">🏆</div><div><h4>Top Tennessee Agent</h4><p>Consistently ranked among top producers for Middle Tennessee residential sales.</p></div></div>
         <div class="why-item"><div class="why-icon">🏦</div><div><h4>Loan Officer Network</h4><p>Connected with the best TN lenders — FHA, VA, USDA, Conventional &amp; Jumbo loans.</p></div></div>
         <div class="why-item"><div class="why-icon">📊</div><div><h4>Data-Driven Pricing</h4><p>Hyper-local comps so you never overpay or underprice in any TN market.</p></div></div>
         <div class="why-item"><div class="why-icon">📸</div><div><h4>Pro Marketing</h4><p>Professional photography, drone shots, 3D tours, and targeted digital ads.</p></div></div>
@@ -188,35 +135,22 @@
     </div>
   </section>
 
-  <!-- ── Testimonials ── -->
+  <!-- Testimonials — populated by config.js -->
   <section class="testimonials">
     <div class="container">
       <div class="section-header">
         <div class="label">Client Reviews</div>
         <h2>What Tennessee Clients Say</h2>
-        <p style="color:#e65100;font-size:0.82rem;margin-top:4px">⚠️ Placeholder testimonials — replace with real client reviews from Google, Zillow, or Realtor.com</p>
+        <p style="color:#e65100;font-size:0.82rem;margin-top:6px;font-weight:600">
+          ⚠️ Update <code>js/config.js → testimonials</code> with real client reviews from Google, Zillow, or Realtor.com
+        </p>
       </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="stars">★★★★★</div>
-          <p>"Helped us find our dream home in Franklin in a tough market. Her knowledge of Williamson County neighborhoods is incredible. Closed in 19 days!"</p>
-          <cite>— [Client Name], Franklin TN — <em>Replace with real review</em></cite>
-        </div>
-        <div class="testimonial-card">
-          <div class="stars">★★★★★</div>
-          <p>"First-time buyers and completely overwhelmed. She walked us through every step and connected us with a great lender. Got our Murfreesboro home under budget!"</p>
-          <cite>— [Client Name], Murfreesboro TN — <em>Replace with real review</em></cite>
-        </div>
-        <div class="testimonial-card">
-          <div class="stars">★★★★★</div>
-          <p>"Sold our Brentwood home in 8 days — $40K over asking. Her staging tips and pricing strategy were spot-on. Highly recommend!"</p>
-          <cite>— [Client Name], Brentwood TN — <em>Replace with real review</em></cite>
-        </div>
-      </div>
+      <!-- Rendered by config.js -->
+      <div class="testimonials-grid" id="cfg-testimonials"></div>
     </div>
   </section>
 
-  <!-- ── CTA ── -->
+  <!-- CTA -->
   <section class="cta-banner">
     <div class="container">
       <h2>Ready to Make Your Move in Tennessee?</h2>
@@ -235,8 +169,8 @@
     <div class="footer-grid">
       <div class="footer-col">
         <img src="img/logo.svg" alt="HomeKey Group TN" style="height:40px;margin-bottom:10px;filter:brightness(10)">
-        <p class="footer-tagline">Licensed Tennessee Real Estate Agent · TN License #00000000</p>
-        <p style="margin-top:8px;font-size:0.82rem;opacity:0.7">Serving Davidson, Williamson, Rutherford, Wilson &amp; Sumner Counties, TN.</p>
+        <p class="footer-tagline" data-cfg-license>TN License #XXXXXXX</p>
+        <p style="margin-top:8px;font-size:0.82rem;opacity:0.7" data-cfg-service-area>Davidson, Williamson, Rutherford, Wilson &amp; Sumner Counties, TN.</p>
         <p style="margin-top:6px;font-size:0.75rem;opacity:0.5">Licensed in Tennessee only. Not licensed in any other state.</p>
       </div>
       <div class="footer-col">
@@ -252,15 +186,16 @@
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
-        <p>📞 <a href="tel:+16155551234">(615) 555-1234</a></p>
-        <p style="margin-top:6px">✉️ <a href="mailto:suman@homekeytn.com">suman@homekeytn.com</a></p>
-        <p style="margin-top:10px;font-size:0.78rem;opacity:0.6">This website is for informational purposes only and does not constitute legal, financial, or mortgage advice. Calculator results are estimates only.</p>
+        <p>📞 <a data-cfg-phone href="#">(615) 555-1234</a></p>
+        <p style="margin-top:6px">✉️ <a data-cfg-email href="#">suman@homekeytn.com</a></p>
+        <p style="margin-top:10px;font-size:0.78rem;opacity:0.6">Calculator results are estimates only — not financial, mortgage, or legal advice.</p>
       </div>
     </div>
-    <p class="footer-bottom">&copy; 2026 HomeKey Group TN. All rights reserved. | <a href="#">Privacy Policy</a></p>
+    <p class="footer-bottom"><span data-cfg-copyright></span> | <a href="#">Privacy Policy</a></p>
   </div>
 </footer>
 
+<script src="js/config.js"></script>
 <script src="js/scripts.js"></script>
 </body>
 </html>
