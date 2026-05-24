@@ -100,19 +100,25 @@
     </div>
   </div>
 
-  <!-- Featured Listings — populated by config.js -->
+  <!-- Featured Listings — live from Zillow via RapidAPI -->
   <section class="featured-listings">
     <div class="container">
       <div class="section-header">
         <div class="label">Just Listed</div>
         <h2>Featured Tennessee Properties</h2>
-        <p>Hand-picked homes available right now in Middle Tennessee</p>
+        <p>Live active listings in <span id="listingsCity">Middle Tennessee</span></p>
       </div>
-      <div class="listings-grid" id="cfg-featured-listings">
-        <!-- Rendered by config.js -->
+      <!-- City quick-switcher -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:24px" id="cityPills">
+        <button class="city-pill active" data-city="Franklin, TN">Franklin</button>
+        <button class="city-pill" data-city="Brentwood, TN">Brentwood</button>
+        <button class="city-pill" data-city="Nashville, TN">Nashville</button>
+        <button class="city-pill" data-city="Murfreesboro, TN">Murfreesboro</button>
+        <button class="city-pill" data-city="Nolensville, TN">Nolensville</button>
       </div>
+      <div class="listings-grid" id="cfg-featured-listings"></div>
       <div class="section-cta">
-        <a href="/listings/" class="btn btn-primary">View All Listings</a>
+        <a href="/search/" class="btn btn-primary">Search All Homes</a>
       </div>
     </div>
   </section>
@@ -196,6 +202,26 @@
 </footer>
 
 <script src="js/config.js"></script>
+<script src="js/listings-api.js"></script>
 <script src="js/scripts.js"></script>
+<script>
+  /* City pill switcher + initial load */
+  const _defaultCity = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.defaultSearchCity)
+    ? SITE_CONFIG.defaultSearchCity : 'Franklin, TN';
+
+  function loadCity(city) {
+    document.getElementById('listingsCity').textContent = city;
+    document.querySelectorAll('.city-pill').forEach(p =>
+      p.classList.toggle('active', p.dataset.city === city)
+    );
+    ListingsAPI.loadInto('cfg-featured-listings', city, 3);
+  }
+
+  document.querySelectorAll('.city-pill').forEach(btn => {
+    btn.addEventListener('click', () => loadCity(btn.dataset.city));
+  });
+
+  loadCity(_defaultCity);
+</script>
 </body>
 </html>

@@ -9,6 +9,15 @@
 
 const SITE_CONFIG = {
 
+  /* ── API Keys ───────────────────────────────────────────────────── */
+  // Get a FREE key: https://rapidapi.com/s.mahmoud97/api/zillow56
+  // Subscribe to the FREE plan → copy "X-RapidAPI-Key" value below
+  rapidApiKey: "YOUR_RAPIDAPI_KEY_HERE",   // ← PASTE YOUR KEY HERE
+
+  /* ── Default search location for live listings ──────────────────── */
+  // This city is used on the homepage + listings page to fetch real data
+  defaultSearchCity: "Franklin, TN",       // ← change to your primary market
+
   /* ── Agent / Brand ──────────────────────────────────────────────── */
   agentName:       "Suman Jampany",          // ← REPLACE with real name
   brandName:       "HomeKey Group TN",        // ← REPLACE with real brand

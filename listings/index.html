@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse live real estate listings in Nashville, Franklin, Brentwood, Murfreesboro and Middle Tennessee.">
+  <title>Live Listings - HomeKey Group TN</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/listings.css">
+  <style>
+    .live-toolbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      position: sticky;
+      top: 68px;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+    .live-toolbar-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .live-toolbar input[type="text"],
+    .live-toolbar select {
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--white);
+      min-width: 160px;
+    }
+    .live-toolbar input[type="text"] { flex: 1; min-width: 200px; }
+    .live-toolbar input:focus,
+    .live-toolbar select:focus { outline: none; border-color: var(--primary); }
+    .live-status {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+    .live-status .dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #27ae60;
+      margin-right: 5px;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .listings-section { background: var(--bg-light); padding: 28px 0 48px; }
+    .api-note {
+      background: var(--accent-light);
+      border: 1px solid #e8d5a0;
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      color: #7a5c00;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .api-note.visible { display: block; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <div class="logo">
+      <a href="../">
+        <img src="../img/logo.svg" alt="HomeKey Group TN" style="height:44px">
+      </a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="../">Home</a></li>
+      <li><a href="../search/">Search</a></li>
+      <li><a href="../listings/" class="active">Listings</a></li>
+      <li><a href="../calculator/">Affordability</a></li>
+      <li><a href="../about/">About</a></li>
+      <li><a href="../contact/">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section class="page-hero">
+    <h1>Live Tennessee Listings</h1>
+    <p>Real active homes for sale — updated daily from Zillow</p>
+  </section>
+
+  <!-- Toolbar -->
+  <div class="live-toolbar">
+    <div class="live-toolbar-inner">
+      <input type="text" id="cityInput" placeholder="City, e.g. Franklin, TN" value="Franklin, TN">
+      <select id="statusSel">
+        <option value="forSale">For Sale</option>
+        <option value="forRent">For Rent</option>
+        <option value="sold">Recently Sold</option>
+      </select>
+      <select id="limitSel">
+        <option value="6">6 results</option>
+        <option value="12" selected>12 results</option>
+        <option value="24">24 results</option>
+      </select>
+      <button class="btn btn-primary" onclick="doSearch()" style="padding:9px 20px">Search</button>
+      <span class="live-status" id="liveStatus">
+        <span class="dot"></span> Live data
+      </span>
+    </div>
+  </div>
+
+  <section class="listings-section">
+    <div class="container">
+      <!-- API key notice (shown only if no key is set) -->
+      <div class="api-note" id="apiNote">
+        ⚠️ <strong>API key not set.</strong> Add your free RapidAPI key to <code>js/config.js → rapidApiKey</code> to load live listings.
+        <a href="https://rapidapi.com/s.mahmoud97/api/zillow56" target="_blank" rel="noopener">Get free key →</a>
+      </div>
+
+      <div class="listings-grid" id="liveListingsGrid"></div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Don't See What You're Looking For?</h2>
+      <p>Suman has access to off-market and coming-soon listings. Tell her what you need.</p>
+      <a href="../contact/" class="btn btn-primary">Contact Suman</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <img src="../img/logo.svg" alt="HomeKey Group TN" style="height:40px;margin-bottom:10px;filter:brightness(10)">
+        <p class="footer-tagline" data-cfg-license>TN License #XXXXXXX</p>
+        <p style="margin-top:8px;font-size:0.82rem;opacity:0.7" data-cfg-service-area></p>
+        <p style="margin-top:6px;font-size:0.75rem;opacity:0.5">Licensed in Tennessee only.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="../">Home</a></li>
+          <li><a href="../search/">Search Homes</a></li>
+          <li><a href="../listings/">Listings</a></li>
+          <li><a href="../calculator/">Affordability Calculator</a></li>
+          <li><a href="../about/">About</a></li>
+          <li><a href="../contact/">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>📞 <a data-cfg-phone href="#">(615) 555-1234</a></p>
+        <p style="margin-top:6px">✉️ <a data-cfg-email href="#">email</a></p>
+      </div>
+    </div>
+    <p class="footer-bottom"><span data-cfg-copyright></span></p>
+  </div>
+</footer>
+
+<script src="../js/config.js"></script>
+<script src="../js/listings-api.js"></script>
+<script src="../js/scripts.js"></script>
+<script>
+  async function doSearch() {
+    const city   = document.getElementById('cityInput').value.trim() || 'Franklin, TN';
+    const status = document.getElementById('statusSel').value;
+    const limit  = parseInt(document.getElementById('limitSel').value);
+    const grid   = document.getElementById('liveListingsGrid');
+    const note   = document.getElementById('apiNote');
+    const statusEl = document.getElementById('liveStatus');
+
+    statusEl.innerHTML = '<span class="dot" style="background:#f39c12"></span> Loading…';
+    ListingsAPI.showSkeleton(grid, limit);
+
+    const key = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.rapidApiKey : '';
+    if (!key || key === 'YOUR_RAPIDAPI_KEY_HERE') {
+      note.classList.add('visible');
+    }
+
+    // Use Zillow56 with status param
+    let listings = null;
+    if (key && key !== 'YOUR_RAPIDAPI_KEY_HERE') {
+      try {
+        const url = `https://zillow56.p.rapidapi.com/search?location=${encodeURIComponent(city)}&status=${status}&sortSelection=priorityscore`;
+        const res = await fetch(url, {
+          headers: {
+            'X-RapidAPI-Key':  key,
+            'X-RapidAPI-Host': 'zillow56.p.rapidapi.com',
+          },
+        });
+        const data = await res.json();
+        const raw = data.results || data.props || [];
+        listings = raw.slice(0, limit).map(p => ({
+          title:     [p.bedrooms, 'Bed', p.propertyType || 'Home'].filter(Boolean).join(' '),
+          address:   p.streetAddress || p.address || '—',
+          city:      p.city || city.split(',')[0],
+          state:     p.state || 'TN',
+          zip:       p.zipcode || '',
+          beds:      p.bedrooms  || '—',
+          baths:     p.bathrooms || '—',
+          sqft:      p.livingArea ? Number(p.livingArea).toLocaleString() : '—',
+          price:     p.price ? '$' + Number(p.price).toLocaleString() : 'Call for Price',
+          badge:     p.listingStatus === 'NEW' ? 'New Listing' : (p.openHouse ? 'Open House' : ''),
+          badgeClass: 'badge-new',
+          image:     p.imgSrc || '',
+          detailUrl: p.detailUrl
+                       ? (p.detailUrl.startsWith('http') ? p.detailUrl : 'https://www.zillow.com' + p.detailUrl)
+                       : '#',
+        }));
+      } catch(e) {
+        console.error(e);
+        listings = null;
+      }
+    }
+
+    if (listings && listings.length > 0) {
+      ListingsAPI.render(listings, grid);
+      statusEl.innerHTML = `<span class="dot"></span> ${listings.length} live results · ${city}`;
+
+      // Zillow attribution
+      const attr = document.createElement('p');
+      attr.style.cssText = 'text-align:center;font-size:0.75rem;color:var(--text-light);margin-top:16px;grid-column:1/-1';
+      attr.innerHTML = 'Listing data provided by <a href="https://www.zillow.com" target="_blank" rel="noopener" style="color:var(--primary)">Zillow</a> via RapidAPI. For informational purposes only — verify with a licensed agent.';
+      grid.after(attr);
+    } else {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-light)">
+          <div style="font-size:3rem;margin-bottom:12px">🔑</div>
+          <h3 style="color:var(--text);margin-bottom:8px">Add your API key to load live listings</h3>
+          <p>Open <code>js/config.js</code> and set <code>rapidApiKey</code> to your free RapidAPI key.</p>
+          <a href="https://rapidapi.com/s.mahmoud97/api/zillow56" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:16px">Get Free API Key →</a>
+        </div>`;
+      statusEl.innerHTML = '<span class="dot" style="background:#e74c3c"></span> No key set';
+    }
+  }
+
+  // Allow Enter key in city input
+  document.getElementById('cityInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  // Load on page init
+  const _city = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.defaultSearchCity)
+    ? SITE_CONFIG.defaultSearchCity : 'Franklin, TN';
+  document.getElementById('cityInput').value = _city;
+  doSearch();
+</script>
+</body>
+</html>
