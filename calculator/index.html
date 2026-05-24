@@ -599,21 +599,20 @@ function buildBreakdown(homePrice, annualRate, termYears, annualTaxRate, annualI
 
 function renderCard(idPrefix, homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa) {
   if (homePrice <= 0) {
-    document.getElementById('price' + idPrefix).innerHTML = '<span style="color:#e74c3c">Income too low for this scenario</span>';
+    document.getElementById('price' + idPrefix).innerHTML = '<span style="color:#e74c3c;font-size:1rem">Income may be too low for this scenario</span>';
     document.getElementById('breakdown' + idPrefix).innerHTML = '';
     return;
   }
   const b = buildBreakdown(homePrice, annualRate, termYears, annualTaxRate, annualInsurance, hoa);
   document.getElementById('price' + idPrefix).innerHTML =
     fmtShort(homePrice) +
-    '<span>Max purchase price · Loan: ' + fmtShort(b.loan) + '</span>';
+    '<span>Max purchase price &nbsp;·&nbsp; Loan: ' + fmtShort(b.loan) + '</span>';
 
   document.getElementById('breakdown' + idPrefix).innerHTML = `
-    <div class="breakdown-item"><div class="b-label">Principal &amp; Interest</div><div class="b-value">${fmt(b.pi)}/mo</div></div>
-    <div class="breakdown-item"><div class="b-label">Est. Property Tax</div><div class="b-value">${fmt(b.tax)}/mo</div></div>
-    <div class="breakdown-item"><div class="b-label">Est. Insurance</div><div class="b-value">${fmt(b.ins)}/mo</div></div>
-    <div class="breakdown-item"><div class="b-label">HOA</div><div class="b-value">${fmt(b.hoa)}/mo</div></div>
-    <div class="breakdown-item" style="grid-column:1/-1;background:#e8eef5"><div class="b-label">Total Monthly Payment</div><div class="b-value" style="color:var(--primary);font-size:1.05rem">${fmt(b.total)}/mo</div></div>
+    <div class="breakdown-item" style="grid-column:1/-1;background:#e8eef5">
+      <div class="b-label">Est. Total Monthly Payment (PITI)</div>
+      <div class="b-value" style="color:var(--primary);font-size:1.05rem">${fmt(b.total)}/mo</div>
+    </div>
   `;
 }
 
