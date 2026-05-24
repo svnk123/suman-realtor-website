@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Browse live real estate listings in Nashville, Franklin, Brentwood, Murfreesboro and Middle Tennessee.">
-  <title>Live Listings - HomeKey Group TN</title>
+  <title>Tennessee Listings - HomeKey Group TN</title>
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/listings.css">
   <style>
-    .live-toolbar {
+    /* ── City pill toolbar ── */
+    .city-toolbar {
       background: var(--white);
       border-bottom: 1px solid var(--border);
       padding: 14px 24px;
@@ -17,7 +18,7 @@
       z-index: 50;
       box-shadow: var(--shadow-sm);
     }
-    .live-toolbar-inner {
+    .city-toolbar-inner {
       max-width: 1160px;
       margin: 0 auto;
       display: flex;
@@ -25,46 +26,83 @@
       align-items: center;
       flex-wrap: wrap;
     }
-    .live-toolbar input[type="text"],
-    .live-toolbar select {
-      padding: 9px 13px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.9rem;
-      color: var(--text);
-      background: var(--white);
-      min-width: 160px;
-    }
-    .live-toolbar input[type="text"] { flex: 1; min-width: 200px; }
-    .live-toolbar input:focus,
-    .live-toolbar select:focus { outline: none; border-color: var(--primary); }
-    .live-status {
-      font-size: 0.82rem;
+    .city-toolbar-inner span {
+      font-size: 0.85rem;
       color: var(--text-light);
-      margin-left: auto;
-      white-space: nowrap;
+      font-weight: 600;
+      margin-right: 4px;
     }
-    .live-status .dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #27ae60;
-      margin-right: 5px;
-      animation: blink 2s ease-in-out infinite;
+    .tab-pill {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
     }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-    .listings-section { background: var(--bg-light); padding: 28px 0 48px; }
-    .api-note {
-      background: var(--accent-light);
-      border: 1px solid #e8d5a0;
-      border-radius: var(--radius-sm);
-      padding: 10px 16px;
-      font-size: 0.82rem;
-      color: #7a5c00;
-      margin-bottom: 20px;
-      display: none;
+    .tab-pill:hover { border-color: var(--primary); color: var(--primary); }
+    .tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* ── Embed frame ── */
+    .embed-wrap {
+      background: var(--bg-light);
+      padding: 28px 0 0;
     }
-    .api-note.visible { display: block; }
+    .embed-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .embed-frame-container {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .embed-frame-container iframe {
+      display: block;
+      width: 100%;
+      height: 780px;
+      border: none;
+    }
+    .embed-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      padding: 10px 0 28px;
+    }
+    .embed-note a { color: var(--primary); }
+
+    /* ── Quick-link cards below embed ── */
+    .search-links { background: var(--white); padding: 40px 0; }
+    .search-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .search-link-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      transition: all .2s;
+      display: block;
+    }
+    .search-link-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+    .search-link-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .search-link-card strong { display: block; font-size: 0.95rem; margin-bottom: 4px; }
+    .search-link-card span { font-size: 0.8rem; color: var(--text-light); }
   </style>
 </head>
 <body>
@@ -91,49 +129,82 @@
 <main>
 
   <section class="page-hero">
-    <h1>Live Tennessee Listings</h1>
-    <p>Real active homes for sale — updated daily from Zillow</p>
+    <h1>Tennessee Homes for Sale</h1>
+    <p>Live MLS listings across Middle Tennessee — updated daily</p>
   </section>
 
-  <!-- Toolbar -->
-  <div class="live-toolbar">
-    <div class="live-toolbar-inner">
-      <input type="text" id="cityInput" placeholder="City, e.g. Franklin, TN" value="Franklin, TN">
-      <select id="statusSel">
-        <option value="forSale">For Sale</option>
-        <option value="forRent">For Rent</option>
-        <option value="sold">Recently Sold</option>
-      </select>
-
-      <select id="limitSel">
-        <option value="6">6 results</option>
-        <option value="12" selected>12 results</option>
-        <option value="24">24 results</option>
-      </select>
-      <button class="btn btn-primary" onclick="doSearch()" style="padding:9px 20px">Search</button>
-      <span class="live-status" id="liveStatus">
-        <span class="dot"></span> Live data
-      </span>
+  <!-- City quick-switch toolbar -->
+  <div class="city-toolbar">
+    <div class="city-toolbar-inner">
+      <span>Browse:</span>
+      <button class="tab-pill active" data-city="Franklin" data-state="TN">Franklin</button>
+      <button class="tab-pill" data-city="Brentwood" data-state="TN">Brentwood</button>
+      <button class="tab-pill" data-city="Nashville" data-state="TN">Nashville</button>
+      <button class="tab-pill" data-city="Murfreesboro" data-state="TN">Murfreesboro</button>
+      <button class="tab-pill" data-city="Nolensville" data-state="TN">Nolensville</button>
+      <button class="tab-pill" data-city="Mt. Juliet" data-state="TN">Mt. Juliet</button>
     </div>
   </div>
 
-  <section class="listings-section">
-    <div class="container">
-      <!-- API key notice (shown only if no key is set) -->
-      <div class="api-note" id="apiNote">
-        ⚠️ <strong>API key not set.</strong> Add your free RapidAPI key to <code>js/config.js → rapidApiKey</code> to load live listings.
-        <a href="https://rapidapi.com/datascraper/api/us-real-estate" target="_blank" rel="noopener">Get free key →</a>
+  <!-- Live Realtor.com search embed -->
+  <div class="embed-wrap">
+    <div class="embed-inner">
+      <div class="embed-frame-container">
+        <iframe
+          id="listingsFrame"
+          src="https://www.realtor.com/realestateandhomes-search/Franklin_TN"
+          title="Live Tennessee real estate listings"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation">
+        </iframe>
       </div>
+      <p class="embed-note">
+        Live listing data from <a href="https://www.realtor.com" target="_blank" rel="noopener">Realtor.com</a> (MLS-backed).
+        All information is deemed reliable but should be verified with a licensed agent.
+        <a href="../contact/">Contact Suman</a> for private showings or off-market opportunities.
+      </p>
+    </div>
+  </div>
 
-      <div class="listings-grid" id="liveListingsGrid"></div>
+  <!-- Quick external search links -->
+  <section class="search-links">
+    <div class="container">
+      <div class="section-header">
+        <div class="label">More Ways to Search</div>
+        <h2>Search on Your Favorite Platform</h2>
+        <p>Click any platform below to search Middle Tennessee homes directly.</p>
+      </div>
+      <div class="search-links-grid">
+        <a class="search-link-card" id="realtorLink" href="https://www.realtor.com/realestateandhomes-search/Franklin_TN" target="_blank" rel="noopener">
+          <div class="icon">🏠</div>
+          <strong>Realtor.com</strong>
+          <span>MLS-backed listings</span>
+        </a>
+        <a class="search-link-card" id="zillowLink" href="https://www.zillow.com/homes/for_sale/Franklin,-TN/" target="_blank" rel="noopener">
+          <div class="icon">🔍</div>
+          <strong>Zillow</strong>
+          <span>Zestimate + photos</span>
+        </a>
+        <a class="search-link-card" id="redfinLink" href="https://www.redfin.com/city/7899/TN/Franklin" target="_blank" rel="noopener">
+          <div class="icon">📊</div>
+          <strong>Redfin</strong>
+          <span>Price history & data</span>
+        </a>
+        <a class="search-link-card" href="../contact/">
+          <div class="icon">📞</div>
+          <strong>Call Suman</strong>
+          <span>Off-market & coming soon</span>
+        </a>
+      </div>
     </div>
   </section>
 
   <section class="cta-banner">
     <div class="container">
-      <h2>Don't See What You're Looking For?</h2>
-      <p>Suman has access to off-market and coming-soon listings. Tell her what you need.</p>
-      <a href="../contact/" class="btn btn-primary">Contact Suman</a>
+      <h2>Found Something You Like?</h2>
+      <p>Suman can schedule a private showing, run comps, and negotiate on your behalf — at no cost to buyers.</p>
+      <a href="../contact/" class="btn btn-primary">Schedule a Showing</a>
     </div>
   </section>
 
@@ -170,73 +241,67 @@
 </footer>
 
 <script src="../js/config.js"></script>
-<script src="../js/listings-api.js"></script>
 <script src="../js/scripts.js"></script>
 <script>
-  async function doSearch() {
-    const city   = document.getElementById('cityInput').value.trim() || 'Franklin, TN';
-    const status = document.getElementById('statusSel').value;
-    const limit  = parseInt(document.getElementById('limitSel').value);
-    const grid   = document.getElementById('liveListingsGrid');
-    const note   = document.getElementById('apiNote');
-    const statusEl = document.getElementById('liveStatus');
+  // City pill switcher — updates iframe src + external links
+  const cityUrls = {
+    'Franklin-TN': {
+      realtor: 'https://www.realtor.com/realestateandhomes-search/Franklin_TN',
+      zillow:  'https://www.zillow.com/homes/for_sale/Franklin,-TN/',
+      redfin:  'https://www.redfin.com/city/7899/TN/Franklin',
+    },
+    'Brentwood-TN': {
+      realtor: 'https://www.realtor.com/realestateandhomes-search/Brentwood_TN',
+      zillow:  'https://www.zillow.com/homes/for_sale/Brentwood,-TN/',
+      redfin:  'https://www.redfin.com/city/7070/TN/Brentwood',
+    },
+    'Nashville-TN': {
+      realtor: 'https://www.realtor.com/realestateandhomes-search/Nashville_TN',
+      zillow:  'https://www.zillow.com/homes/for_sale/Nashville,-TN/',
+      redfin:  'https://www.redfin.com/city/13501/TN/Nashville',
+    },
+    'Murfreesboro-TN': {
+      realtor: 'https://www.realtor.com/realestateandhomes-search/Murfreesboro_TN',
+      zillow:  'https://www.zillow.com/homes/for_sale/Murfreesboro,-TN/',
+      redfin:  'https://www.redfin.com/city/13392/TN/Murfreesboro',
+    },
+    'Nolensville-TN': {
+      realtor: 'https://www.realtor.com/realestateandhomes-search/Nolensville_TN',
+      zillow:  'https://www.zillow.com/homes/for_sale/Nolensville,-TN/',
+      redfin:  'https://www.redfin.com/city/13721/TN/Nolensville',
+    },
+    'Mt. Juliet-TN': {
+      realtor: 'https://www.realtor.com/realestateandhomes-search/Mount-Juliet_TN',
+      zillow:  'https://www.zillow.com/homes/for_sale/Mount-Juliet,-TN/',
+      redfin:  'https://www.redfin.com/city/13246/TN/Mount-Juliet',
+    },
+  };
 
-    statusEl.innerHTML = '<span class="dot" style="background:#f39c12"></span> Loading…';
-    ListingsAPI.showSkeleton(grid, limit);
+  function switchCity(cityEl) {
+    document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+    cityEl.classList.add('active');
 
-    const key = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG.rapidApiKey : '';
-    if (!key || key === 'YOUR_RAPIDAPI_KEY_HERE') {
-      note.classList.add('visible');
-    }
+    const key = cityEl.dataset.city + '-' + cityEl.dataset.state;
+    const urls = cityUrls[key];
+    if (!urls) return;
 
-    // Use US Real Estate API via RapidAPI
-    let listings = null;
-    if (key && key !== 'YOUR_RAPIDAPI_KEY_HERE') {
-      try {
-        if (status === 'forSale') {
-          listings = await ListingsAPI.fetchForSale(city, limit);
-        } else if (status === 'forRent') {
-          listings = await ListingsAPI.fetchForRent(city, limit);
-        } else {
-          listings = await ListingsAPI.fetchSold(city, limit);
-        }
-      } catch(e) {
-        console.error(e);
-        listings = null;
-      }
-    }
-
-    if (listings && listings.length > 0) {
-      ListingsAPI.render(listings, grid);
-      statusEl.innerHTML = `<span class="dot"></span> ${listings.length} live results · ${city}`;
-
-      // Attribution
-      const attr = document.createElement('p');
-      attr.style.cssText = 'text-align:center;font-size:0.75rem;color:var(--text-light);margin-top:16px;grid-column:1/-1';
-      attr.innerHTML = 'Listing data provided by <a href="https://www.realtor.com" target="_blank" rel="noopener" style="color:var(--primary)">Realtor.com</a> via RapidAPI. For informational purposes only — verify with a licensed agent.';
-      grid.after(attr);
-    } else {
-      grid.innerHTML = `
-        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-light)">
-          <div style="font-size:3rem;margin-bottom:12px">🔑</div>
-          <h3 style="color:var(--text);margin-bottom:8px">Add your API key to load live listings</h3>
-          <p>Open <code>js/config.js</code> and set <code>rapidApiKey</code> to your free RapidAPI key.</p>
-          <a href="https://rapidapi.com/datascraper/api/us-real-estate" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:16px">Get Free API Key →</a>
-        </div>`;
-      statusEl.innerHTML = '<span class="dot" style="background:#e74c3c"></span> No key set';
-    }
+    document.getElementById('listingsFrame').src = urls.realtor;
+    document.getElementById('realtorLink').href = urls.realtor;
+    document.getElementById('zillowLink').href  = urls.zillow;
+    document.getElementById('redfinLink').href  = urls.redfin;
   }
 
-  // Allow Enter key in city input
-  document.getElementById('cityInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doSearch();
+  document.querySelectorAll('.tab-pill').forEach(btn => {
+    btn.addEventListener('click', () => switchCity(btn));
   });
 
-  // Load on page init
-  const _city = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.defaultSearchCity)
-    ? SITE_CONFIG.defaultSearchCity : 'Franklin, TN';
-  document.getElementById('cityInput').value = _city;
-  doSearch();
+  // Set default city from config
+  const defaultCity = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.defaultSearchCity)
+    ? SITE_CONFIG.defaultSearchCity.split(',')[0].trim()
+    : 'Franklin';
+  const defaultBtn = Array.from(document.querySelectorAll('.tab-pill'))
+    .find(b => b.dataset.city === defaultCity);
+  if (defaultBtn) switchCity(defaultBtn);
 </script>
 </body>
 </html>
