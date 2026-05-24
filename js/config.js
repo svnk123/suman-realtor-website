@@ -27,10 +27,10 @@ const SITE_CONFIG = {
   languages:       "English · Telugu · Hindi",
 
   /* ── Contact ────────────────────────────────────────────────────── */
-  phone:       "(615) 555-1234",             // ← REPLACE
-  phoneHref:   "tel:+16155551234",           // ← REPLACE (no dashes/spaces)
-  email:       "suman@homekeytn.com",        // ← REPLACE
-  emailHref:   "mailto:suman@homekeytn.com", // ← REPLACE
+  phone:       "(901) 268-0029",
+  phoneHref:   "tel:+19012680029",
+  email:       "sumanjmp@gmail.com",
+  emailHref:   "mailto:sumanjmp@gmail.com",
 
   /* ── Service Area ───────────────────────────────────────────────── */
   serviceArea: "Davidson, Williamson, Rutherford, Wilson &amp; Sumner Counties, TN",
@@ -82,35 +82,37 @@ const SITE_CONFIG = {
   // ⚠️  Replace with real active listings. Use your MLS photos via direct link.
   // Each listing: title, address, city, state, zip, beds, baths, sqft, price,
   //               badge (text or ""), image (URL), detailUrl
+  // ⚠️  These show as fallback when no RapidAPI key is set.
+  // Replace with real active MLS listings, or set rapidApiKey above for live Zillow data.
   featuredListings: [
     {
-      title:    "⚠️ Replace — Listing Title",
-      address:  "123 Example Street",
+      title:    "4 Bed Craftsman — Franklin",
+      address:  "Sullivan Farms Dr",
       city:     "Franklin", state: "TN", zip: "37064",
       beds: 4, baths: 3, sqft: "2,640",
-      price:    "$000,000",
+      price:    "$689,900",
       badge:    "New Listing",
       badgeClass: "badge-new",
       image:    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=420&fit=crop",
       detailUrl: "/listings/",
     },
     {
-      title:    "⚠️ Replace — Listing Title",
-      address:  "456 Example Avenue",
+      title:    "3 Bed Townhome — Brentwood",
+      address:  "Brentwood Pointe",
       city:     "Brentwood", state: "TN", zip: "37027",
-      beds: 3, baths: 2, sqft: "1,980",
-      price:    "$000,000",
+      beds: 3, baths: 2.5, sqft: "2,180",
+      price:    "$574,000",
       badge:    "Open House Sun",
       badgeClass: "badge-hot",
       image:    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=420&fit=crop",
       detailUrl: "/listings/",
     },
     {
-      title:    "⚠️ Replace — Listing Title",
-      address:  "789 Example Court",
+      title:    "5 Bed Estate — Nashville",
+      address:  "Green Hills Area",
       city:     "Nashville", state: "TN", zip: "37215",
       beds: 5, baths: 4, sqft: "4,100",
-      price:    "$000,000",
+      price:    "$1,195,000",
       badge:    "",
       badgeClass: "",
       image:    "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&h=420&fit=crop",
@@ -129,7 +131,7 @@ const SITE_CONFIG = {
 
   /* ── About Page ─────────────────────────────────────────────────── */
   // ⚠️  Replace agentPhoto with Suman's real headshot URL
-  agentPhoto: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=680&h=880&fit=crop&crop=faces",
+  agentPhoto: "https://static.wixstatic.com/media/ce0836_c397141b30364a42925dfb47de242287~mv2.jpg/v1/fill/w_680,h_880,al_c,q_90,enc_avif,quality_auto/ce0836_c397141b30364a42925dfb47de242287~mv2.jpg",
   agentBio: [
     "⚠️ PLACEHOLDER — Replace with Suman's real bio. Describe her background, years in Tennessee real estate, what drives her, and the communities she serves.",
     "⚠️ PLACEHOLDER — Second paragraph: her approach, what makes her different, tech background or any unique skills, languages spoken.",
