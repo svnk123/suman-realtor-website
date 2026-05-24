@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Browse live real estate listings in Nashville, Franklin, Brentwood, Murfreesboro and Middle Tennessee.">
+  <meta name="description" content="Browse real estate listings in Nashville, Franklin, Brentwood, Murfreesboro and Middle Tennessee.">
   <title>Tennessee Listings - HomeKey Group TN</title>
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="../css/listings.css">
   <style>
-    /* ── City pill toolbar ── */
     .city-toolbar {
       background: var(--white);
       border-bottom: 1px solid var(--border);
@@ -26,83 +25,73 @@
       align-items: center;
       flex-wrap: wrap;
     }
-    .city-toolbar-inner span {
+    .city-toolbar-inner > span {
       font-size: 0.85rem;
       color: var(--text-light);
       font-weight: 600;
-      margin-right: 4px;
     }
-    .tab-pill {
-      padding: 7px 16px;
-      border-radius: 20px;
-      border: 1.5px solid var(--border);
-      background: var(--white);
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .tab-pill:hover { border-color: var(--primary); color: var(--primary); }
-    .tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-    /* ── Embed frame ── */
-    .embed-wrap {
-      background: var(--bg-light);
-      padding: 28px 0 0;
+    .listings-section { background: var(--bg-light); padding: 36px 0 52px; }
+
+    /* Search-all bar */
+    .search-all-bar {
+      background: var(--primary);
+      padding: 20px 24px;
     }
-    .embed-inner {
+    .search-all-bar-inner {
       max-width: 1160px;
       margin: 0 auto;
-      padding: 0 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
     }
-    .embed-frame-container {
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      background: #fff;
+    .search-all-bar p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+      margin: 0;
+      flex: 1;
     }
-    .embed-frame-container iframe {
-      display: block;
-      width: 100%;
-      height: 780px;
-      border: none;
-    }
-    .embed-note {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text-light);
-      padding: 10px 0 28px;
-    }
-    .embed-note a { color: var(--primary); }
-
-    /* ── Quick-link cards below embed ── */
-    .search-links { background: var(--white); padding: 40px 0; }
-    .search-links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-top: 24px;
-    }
-    .search-link-card {
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      text-align: center;
+    .search-all-bar p strong { color: #fff; }
+    .search-platform-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-platform {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
       text-decoration: none;
-      color: var(--text);
-      transition: all .2s;
-      display: block;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      transition: background .2s;
     }
-    .search-link-card:hover {
-      border-color: var(--primary);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
+    .btn-platform:hover { background: rgba(255,255,255,0.25); }
+
+    /* City section headers */
+    .city-section { margin-bottom: 40px; }
+    .city-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .search-link-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
-    .search-link-card strong { display: block; font-size: 0.95rem; margin-bottom: 4px; }
-    .search-link-card span { font-size: 0.8rem; color: var(--text-light); }
+    .city-section-header h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin: 0;
+    }
+    .city-section-header a {
+      font-size: 0.83rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .city-section-header a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -130,81 +119,55 @@
 
   <section class="page-hero">
     <h1>Tennessee Homes for Sale</h1>
-    <p>Live MLS listings across Middle Tennessee — updated daily</p>
+    <p>Featured listings across Middle Tennessee — contact Suman for private showings</p>
   </section>
 
-  <!-- City quick-switch toolbar -->
+  <!-- City filter pills -->
   <div class="city-toolbar">
     <div class="city-toolbar-inner">
-      <span>Browse:</span>
-      <button class="tab-pill active" data-city="Franklin" data-state="TN">Franklin</button>
-      <button class="tab-pill" data-city="Brentwood" data-state="TN">Brentwood</button>
-      <button class="tab-pill" data-city="Nashville" data-state="TN">Nashville</button>
-      <button class="tab-pill" data-city="Murfreesboro" data-state="TN">Murfreesboro</button>
-      <button class="tab-pill" data-city="Nolensville" data-state="TN">Nolensville</button>
-      <button class="tab-pill" data-city="Mt. Juliet" data-state="TN">Mt. Juliet</button>
+      <span>Filter:</span>
+      <button class="city-pill active" data-city="all">All Cities</button>
+      <button class="city-pill" data-city="Franklin">Franklin</button>
+      <button class="city-pill" data-city="Brentwood">Brentwood</button>
+      <button class="city-pill" data-city="Nashville">Nashville</button>
+      <button class="city-pill" data-city="Nolensville">Nolensville</button>
+      <button class="city-pill" data-city="Murfreesboro">Murfreesboro</button>
+      <button class="city-pill" data-city="Mt. Juliet">Mt. Juliet</button>
     </div>
   </div>
 
-  <!-- Live Realtor.com search embed -->
-  <div class="embed-wrap">
-    <div class="embed-inner">
-      <div class="embed-frame-container">
-        <iframe
-          id="listingsFrame"
-          src="https://www.realtor.com/realestateandhomes-search/Franklin_TN"
-          title="Live Tennessee real estate listings"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation">
-        </iframe>
+  <!-- Search-all bar -->
+  <div class="search-all-bar">
+    <div class="search-all-bar-inner">
+      <p><strong>Want to search all active MLS listings?</strong> Browse thousands of homes on your preferred platform:</p>
+      <div class="search-platform-btns">
+        <a id="realtorBtn" href="https://www.realtor.com/realestateandhomes-search/Franklin_TN" target="_blank" rel="noopener" class="btn-platform">🏠 Realtor.com</a>
+        <a id="zillowBtn"  href="https://www.zillow.com/homes/for_sale/Franklin,-TN/"           target="_blank" rel="noopener" class="btn-platform">🔍 Zillow</a>
+        <a id="redfinBtn"  href="https://www.redfin.com/city/7899/TN/Franklin"                  target="_blank" rel="noopener" class="btn-platform">📊 Redfin</a>
       </div>
-      <p class="embed-note">
-        Live listing data from <a href="https://www.realtor.com" target="_blank" rel="noopener">Realtor.com</a> (MLS-backed).
-        All information is deemed reliable but should be verified with a licensed agent.
-        <a href="../contact/">Contact Suman</a> for private showings or off-market opportunities.
-      </p>
     </div>
   </div>
 
-  <!-- Quick external search links -->
-  <section class="search-links">
+  <!-- Featured listing cards -->
+  <section class="listings-section">
     <div class="container">
-      <div class="section-header">
-        <div class="label">More Ways to Search</div>
-        <h2>Search on Your Favorite Platform</h2>
-        <p>Click any platform below to search Middle Tennessee homes directly.</p>
+      <div class="section-header" style="margin-bottom:28px">
+        <div class="label">Featured Listings</div>
+        <h2 id="listingsHeading">All Middle Tennessee</h2>
+        <p>Select a listing below to view full details. Contact Suman for a private showing.</p>
       </div>
-      <div class="search-links-grid">
-        <a class="search-link-card" id="realtorLink" href="https://www.realtor.com/realestateandhomes-search/Franklin_TN" target="_blank" rel="noopener">
-          <div class="icon">🏠</div>
-          <strong>Realtor.com</strong>
-          <span>MLS-backed listings</span>
-        </a>
-        <a class="search-link-card" id="zillowLink" href="https://www.zillow.com/homes/for_sale/Franklin,-TN/" target="_blank" rel="noopener">
-          <div class="icon">🔍</div>
-          <strong>Zillow</strong>
-          <span>Zestimate + photos</span>
-        </a>
-        <a class="search-link-card" id="redfinLink" href="https://www.redfin.com/city/7899/TN/Franklin" target="_blank" rel="noopener">
-          <div class="icon">📊</div>
-          <strong>Redfin</strong>
-          <span>Price history & data</span>
-        </a>
-        <a class="search-link-card" href="../contact/">
-          <div class="icon">📞</div>
-          <strong>Call Suman</strong>
-          <span>Off-market & coming soon</span>
-        </a>
-      </div>
+      <div class="listings-grid" id="listingsGrid"></div>
     </div>
   </section>
 
   <section class="cta-banner">
     <div class="container">
-      <h2>Found Something You Like?</h2>
-      <p>Suman can schedule a private showing, run comps, and negotiate on your behalf — at no cost to buyers.</p>
-      <a href="../contact/" class="btn btn-primary">Schedule a Showing</a>
+      <h2>Don't See What You're Looking For?</h2>
+      <p>Suman has access to off-market and coming-soon listings. Tell her exactly what you need.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a href="../contact/" class="btn btn-primary">Contact Suman</a>
+        <a href="../calculator/" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.7);padding:11px 26px;border-radius:6px;font-weight:600;font-size:0.92rem">💰 Affordability Calc</a>
+      </div>
     </div>
   </section>
 
@@ -243,65 +206,75 @@
 <script src="../js/config.js"></script>
 <script src="../js/scripts.js"></script>
 <script>
-  // City pill switcher — updates iframe src + external links
-  const cityUrls = {
-    'Franklin-TN': {
-      realtor: 'https://www.realtor.com/realestateandhomes-search/Franklin_TN',
-      zillow:  'https://www.zillow.com/homes/for_sale/Franklin,-TN/',
-      redfin:  'https://www.redfin.com/city/7899/TN/Franklin',
-    },
-    'Brentwood-TN': {
-      realtor: 'https://www.realtor.com/realestateandhomes-search/Brentwood_TN',
-      zillow:  'https://www.zillow.com/homes/for_sale/Brentwood,-TN/',
-      redfin:  'https://www.redfin.com/city/7070/TN/Brentwood',
-    },
-    'Nashville-TN': {
-      realtor: 'https://www.realtor.com/realestateandhomes-search/Nashville_TN',
-      zillow:  'https://www.zillow.com/homes/for_sale/Nashville,-TN/',
-      redfin:  'https://www.redfin.com/city/13501/TN/Nashville',
-    },
-    'Murfreesboro-TN': {
-      realtor: 'https://www.realtor.com/realestateandhomes-search/Murfreesboro_TN',
-      zillow:  'https://www.zillow.com/homes/for_sale/Murfreesboro,-TN/',
-      redfin:  'https://www.redfin.com/city/13392/TN/Murfreesboro',
-    },
-    'Nolensville-TN': {
-      realtor: 'https://www.realtor.com/realestateandhomes-search/Nolensville_TN',
-      zillow:  'https://www.zillow.com/homes/for_sale/Nolensville,-TN/',
-      redfin:  'https://www.redfin.com/city/13721/TN/Nolensville',
-    },
-    'Mt. Juliet-TN': {
-      realtor: 'https://www.realtor.com/realestateandhomes-search/Mount-Juliet_TN',
-      zillow:  'https://www.zillow.com/homes/for_sale/Mount-Juliet,-TN/',
-      redfin:  'https://www.redfin.com/city/13246/TN/Mount-Juliet',
-    },
+  const listings = SITE_CONFIG.featuredListings;
+
+  // External search URLs per city
+  const citySearchUrls = {
+    'Franklin':     { realtor: 'https://www.realtor.com/realestateandhomes-search/Franklin_TN',      zillow: 'https://www.zillow.com/homes/for_sale/Franklin,-TN/',      redfin: 'https://www.redfin.com/city/7899/TN/Franklin' },
+    'Brentwood':    { realtor: 'https://www.realtor.com/realestateandhomes-search/Brentwood_TN',     zillow: 'https://www.zillow.com/homes/for_sale/Brentwood,-TN/',     redfin: 'https://www.redfin.com/city/7070/TN/Brentwood' },
+    'Nashville':    { realtor: 'https://www.realtor.com/realestateandhomes-search/Nashville_TN',     zillow: 'https://www.zillow.com/homes/for_sale/Nashville,-TN/',     redfin: 'https://www.redfin.com/city/13501/TN/Nashville' },
+    'Murfreesboro': { realtor: 'https://www.realtor.com/realestateandhomes-search/Murfreesboro_TN',  zillow: 'https://www.zillow.com/homes/for_sale/Murfreesboro,-TN/',  redfin: 'https://www.redfin.com/city/13392/TN/Murfreesboro' },
+    'Nolensville':  { realtor: 'https://www.realtor.com/realestateandhomes-search/Nolensville_TN',   zillow: 'https://www.zillow.com/homes/for_sale/Nolensville,-TN/',   redfin: 'https://www.redfin.com/city/13721/TN/Nolensville' },
+    'Mt. Juliet':   { realtor: 'https://www.realtor.com/realestateandhomes-search/Mount-Juliet_TN',  zillow: 'https://www.zillow.com/homes/for_sale/Mount-Juliet,-TN/',  redfin: 'https://www.redfin.com/city/13246/TN/Mount-Juliet' },
+    'all':          { realtor: 'https://www.realtor.com/realestateandhomes-search/Middle-Tennessee_TN', zillow: 'https://www.zillow.com/homes/for_sale/TN/', redfin: 'https://www.redfin.com/state/Tennessee' },
   };
 
-  function switchCity(cityEl) {
-    document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
-    cityEl.classList.add('active');
+  function renderCards(filterCity) {
+    const grid = document.getElementById('listingsGrid');
+    const filtered = filterCity === 'all' ? listings : listings.filter(l => l.city === filterCity);
 
-    const key = cityEl.dataset.city + '-' + cityEl.dataset.state;
-    const urls = cityUrls[key];
-    if (!urls) return;
+    if (!filtered.length) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-light)">
+        <div style="font-size:2.5rem;margin-bottom:12px">🏠</div>
+        <h3>No listings for ${filterCity} yet</h3>
+        <p>Contact Suman — she may have off-market options.</p>
+        <a href="../contact/" class="btn btn-primary" style="margin-top:16px">Contact Suman</a>
+      </div>`;
+      return;
+    }
 
-    document.getElementById('listingsFrame').src = urls.realtor;
-    document.getElementById('realtorLink').href = urls.realtor;
-    document.getElementById('zillowLink').href  = urls.zillow;
-    document.getElementById('redfinLink').href  = urls.redfin;
+    grid.innerHTML = filtered.map(l => `
+      <div class="listing-card">
+        ${l.badge ? `<span class="listing-badge ${l.badgeClass}">${l.badge}</span>` : ''}
+        <img class="listing-img" src="${l.image}" alt="${l.title} in ${l.city}, ${l.state}" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=420&fit=crop'">
+        <div class="listing-info">
+          <h3>${l.title}</h3>
+          <p class="listing-address">📍 ${l.address}, ${l.city}, ${l.state} ${l.zip}</p>
+          <div class="listing-details">
+            <span>🛏 ${l.beds} Beds</span>
+            <span>🚿 ${l.baths} Baths</span>
+            <span>📐 ${l.sqft} sqft</span>
+          </div>
+          <div class="listing-price">${l.price}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a href="${l.detailUrl}" target="_blank" rel="noopener" class="btn btn-outline" style="flex:1">View Listing ↗</a>
+            <a href="../contact/" class="btn btn-primary" style="flex:1">Schedule Showing</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
   }
 
-  document.querySelectorAll('.tab-pill').forEach(btn => {
-    btn.addEventListener('click', () => switchCity(btn));
+  function setCity(city) {
+    document.querySelectorAll('.city-pill').forEach(p => p.classList.toggle('active', p.dataset.city === city));
+    const heading = document.getElementById('listingsHeading');
+    heading.textContent = city === 'all' ? 'All Middle Tennessee' : city + ', TN';
+
+    // Update search bar links
+    const urls = citySearchUrls[city] || citySearchUrls['all'];
+    document.getElementById('realtorBtn').href = urls.realtor;
+    document.getElementById('zillowBtn').href  = urls.zillow;
+    document.getElementById('redfinBtn').href  = urls.redfin;
+
+    renderCards(city);
+  }
+
+  document.querySelectorAll('.city-pill').forEach(btn => {
+    btn.addEventListener('click', () => setCity(btn.dataset.city));
   });
 
-  // Set default city from config
-  const defaultCity = (typeof SITE_CONFIG !== 'undefined' && SITE_CONFIG.defaultSearchCity)
-    ? SITE_CONFIG.defaultSearchCity.split(',')[0].trim()
-    : 'Franklin';
-  const defaultBtn = Array.from(document.querySelectorAll('.tab-pill'))
-    .find(b => b.dataset.city === defaultCity);
-  if (defaultBtn) switchCity(defaultBtn);
+  setCity('all');
 </script>
 </body>
 </html>

@@ -82,11 +82,11 @@ const SITE_CONFIG = {
   // ⚠️  Replace with real active listings. Use your MLS photos via direct link.
   // Each listing: title, address, city, state, zip, beds, baths, sqft, price,
   //               badge (text or ""), image (URL), detailUrl
-  // ⚠️  These show as fallback when no RapidAPI key is set.
-  // Replace with real active MLS listings, or set rapidApiKey above for live Zillow data.
+  // ⚠️  Replace these with Suman's real active MLS listings.
+  // Each card links out to the real listing on Realtor.com or Zillow (set detailUrl).
   featuredListings: [
     {
-      title:    "4 Bed Craftsman — Franklin",
+      title:    "4 Bed Craftsman",
       address:  "Sullivan Farms Dr",
       city:     "Franklin", state: "TN", zip: "37064",
       beds: 4, baths: 3, sqft: "2,640",
@@ -94,10 +94,10 @@ const SITE_CONFIG = {
       badge:    "New Listing",
       badgeClass: "badge-new",
       image:    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=420&fit=crop",
-      detailUrl: "/listings/",
+      detailUrl: "https://www.realtor.com/realestateandhomes-search/Franklin_TN",
     },
     {
-      title:    "3 Bed Townhome — Brentwood",
+      title:    "3 Bed Townhome",
       address:  "Brentwood Pointe",
       city:     "Brentwood", state: "TN", zip: "37027",
       beds: 3, baths: 2.5, sqft: "2,180",
@@ -105,10 +105,10 @@ const SITE_CONFIG = {
       badge:    "Open House Sun",
       badgeClass: "badge-hot",
       image:    "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=420&fit=crop",
-      detailUrl: "/listings/",
+      detailUrl: "https://www.realtor.com/realestateandhomes-search/Brentwood_TN",
     },
     {
-      title:    "5 Bed Estate — Nashville",
+      title:    "5 Bed Estate",
       address:  "Green Hills Area",
       city:     "Nashville", state: "TN", zip: "37215",
       beds: 5, baths: 4, sqft: "4,100",
@@ -116,7 +116,40 @@ const SITE_CONFIG = {
       badge:    "",
       badgeClass: "",
       image:    "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&h=420&fit=crop",
-      detailUrl: "/listings/",
+      detailUrl: "https://www.realtor.com/realestateandhomes-search/Nashville_TN",
+    },
+    {
+      title:    "4 Bed Colonial",
+      address:  "Nolensville Pike Area",
+      city:     "Nolensville", state: "TN", zip: "37135",
+      beds: 4, baths: 3.5, sqft: "3,020",
+      price:    "$749,000",
+      badge:    "New Listing",
+      badgeClass: "badge-new",
+      image:    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&h=420&fit=crop",
+      detailUrl: "https://www.realtor.com/realestateandhomes-search/Nolensville_TN",
+    },
+    {
+      title:    "3 Bed Ranch",
+      address:  "Murfreesboro Pike",
+      city:     "Murfreesboro", state: "TN", zip: "37129",
+      beds: 3, baths: 2, sqft: "1,780",
+      price:    "$389,900",
+      badge:    "",
+      badgeClass: "",
+      image:    "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=420&fit=crop",
+      detailUrl: "https://www.realtor.com/realestateandhomes-search/Murfreesboro_TN",
+    },
+    {
+      title:    "5 Bed New Build",
+      address:  "Providence Area",
+      city:     "Mt. Juliet", state: "TN", zip: "37122",
+      beds: 5, baths: 4, sqft: "3,850",
+      price:    "$824,500",
+      badge:    "Price Drop",
+      badgeClass: "badge-hot",
+      image:    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=420&fit=crop",
+      detailUrl: "https://www.realtor.com/realestateandhomes-search/Mount-Juliet_TN",
     },
   ],
 
